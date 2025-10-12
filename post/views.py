@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, status
 from fastapi_cache.decorator import cache
 
-from auth.deps import currentUserDep, verifiedUserDep
+from auth.deps import currentUserDep
 from comment.deps import commentServiceDep
 from comment.schemas import CommentCreate, CommentShow
 from helpers.search import Pagination
@@ -72,7 +72,7 @@ async def get_post(
 )
 async def update_post(
         post: postDep,
-        user: verifiedUserDep,
+        user: currentUserDep,
         update_info: PostUpdate,
         post_service: postServiceDep,
 ):
@@ -85,13 +85,12 @@ async def update_post(
     summary="Создать комментарий под постом",
     response_model=CommentShow,
     status_code=status.HTTP_201_CREATED
-
 )
 async def create_comment(
         post: postDep,
         comment_info: CommentCreate,
         comment_service: commentServiceDep,
-        user: verifiedUserDep
+        user: currentUserDep
 ):
     return await comment_service.create_comment(
         comment_info,

@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from user.deps import userDep
 from direct.schemas import  MessageCreate, DirectMessageShow, DirectChatShow, DirectUserSettingsSchema
-from auth.deps import verifiedUserDep
+from auth.deps import currentUserDep
 from auth.deps import currentUserDep
 
 from direct.deps import directChatServiceDep
@@ -44,7 +44,7 @@ async def get_banned_chats(
     response_model=list[DirectMessageShow]
 )
 async def get_messages(
-        user: verifiedUserDep,
+        user: currentUserDep,
         recipient: userDep,
         chat_service: directChatServiceDep,
         pagination: Pagination = Depends()
@@ -58,7 +58,7 @@ async def get_messages(
     response_model=DirectUserSettingsSchema
 )
 async def get_direct_settings(
-        user: verifiedUserDep,
+        user: currentUserDep,
         recipient: userDep,
         chat_service: directChatServiceDep,
 ):
@@ -70,7 +70,7 @@ async def get_direct_settings(
     response_model=DirectUserSettingsSchema
 )
 async def edit_direct_settings(
-        user: verifiedUserDep,
+        user: currentUserDep,
         recipient: userDep,
         settings: DirectUserSettingsSchema,
         chat_service: directChatServiceDep,
@@ -111,7 +111,7 @@ async def unban_user(
     response_model=DirectMessageShow
 )
 async def create_message(
-        sender: verifiedUserDep,
+        sender: currentUserDep,
         recipient: userDep,
         chat_service: directChatServiceDep,
         message_info: MessageCreate
@@ -128,7 +128,7 @@ async def create_message(
 @cache(expire=60)
 async def get_message(
         message_id: int,
-        user: verifiedUserDep,
+        user: currentUserDep,
         chat_service: directChatServiceDep,
 ):
     return await chat_service.get_message_by_id(user, message_id)
@@ -141,7 +141,7 @@ async def get_message(
 )
 async def edit_message(
         message_id: int,
-        user: verifiedUserDep,
+        user: currentUserDep,
         chat_service: directChatServiceDep,
         updates: MessageCreate
 ):

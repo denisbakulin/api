@@ -38,6 +38,34 @@ async def create_topic(
 ):
     return await topic_service.create_topic(topic)
 
+
+
+@topic_router.post(
+    "/offer",
+    summary="Предложить тему для обсуждений",
+    response_model=TopicOfferShow,
+    status_code=status.HTTP_201_CREATED,
+)
+async def offer_theme(
+        user: currentUserDep,
+        offer_service: topicOfferServiceDep,
+        topic: BaseTopic
+):
+    return await offer_service.create_offer_topic(user, topic)
+
+
+@topic_router.get(
+    "/offer",
+    summary="Посмотреть предложенные темы",
+    response_model=list[TopicOfferShow],
+)
+async def offer_theme(
+        offer_service: topicOfferServiceDep,
+        pagination: Pagination = Depends()
+):
+    return await offer_service.get_items_by(pagination)
+
+
 @topic_router.get(
     "/{slug}",
     summary="Получить тему",
@@ -77,18 +105,7 @@ async def get_topic_posts(
     return await post_service.get_items_by(pagination, topic_id=topic.id)
 
 
-@topic_router.post(
-    "/offer",
-    summary="Предложить тему для обсуждений",
-    response_model=TopicOfferShow,
-    status_code=status.HTTP_201_CREATED,
-)
-async def offer_theme(
-        user: currentUserDep,
-        offer_service: topicOfferServiceDep,
-        topic: BaseTopic
-):
-    return await offer_service.create_offer_topic(user, topic)
+
 
 
 @topic_router.post(

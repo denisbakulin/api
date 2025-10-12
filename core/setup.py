@@ -76,7 +76,6 @@ async def init_db(app: FastAPI):
     from user.service import UserService
 
     from direct.model import DirectChat, DirectMessage, DirectUserSettings
-    from auth.model import UsedToken
     from user.model import User, Profile, Settings
     from comment.model import Comment
     from post.model import Post

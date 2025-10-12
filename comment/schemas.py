@@ -12,6 +12,7 @@ class CommentCreate(CommentBase):
 
 class CommentShow(CommentCreate, IdMixinSchema, TimeMixinSchema):
     user_id: int
+    post_id: int
 
 
 class CommentUpdate(CommentBase):

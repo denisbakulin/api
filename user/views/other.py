@@ -52,8 +52,10 @@ async def get_user_posts(
 ):
     posts = await post_service.get_items_by(
         author_id=user.id,
-        pagination=pagination
+        pagination=pagination,
+        topic_id=None
     )
+
     return posts
 
 

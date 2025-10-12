@@ -5,22 +5,15 @@ from pydantic import EmailStr, Field, field_validator
 from core.schemas import BaseSchema,  IdMixinSchema, TimeMixinSchema
 
 
-
-
 class UserCreate(BaseSchema):
     username: str = Field(min_length=1)
     password: str = Field(min_length=5)
     email: EmailStr | None = None
 
-    bio: str | None = None
-    avatar: str | None = None
-
 
     @field_validator("username")
     def normalize_name(cls, username: str):
         return username.strip().lower()
-
-
 
 class UserProfile(BaseSchema):
     bio: str | None = None
@@ -31,7 +24,9 @@ class UserProfile(BaseSchema):
 
 class UserUpdate(BaseSchema):
     username: Optional[str] = Field(default=None)
-    profile: UserProfile
+    email: EmailStr | None = None
+    profile: UserProfile | None = None
+
 
 
 class PostUserShow(BaseSchema):
@@ -46,8 +41,8 @@ class UserShow(BaseSchema, IdMixinSchema, TimeMixinSchema):
 
 
 class UserShowMe(UserShow):
-    is_verified: bool
     is_admin: bool
+    password_login: bool
 
 
 
@@ -56,8 +51,11 @@ class PasswordChange(BaseSchema):
     old_password: str = Field(min_length=5)
     new_password: str = Field(min_length=5)
 
-class EmailUpdate(BaseSchema):
-    new_email: EmailStr
+
+class PasswordCreate(BaseSchema):
+    password: str = Field(min_length=5)
+
+
 
 
 class UserSettings(BaseSchema):

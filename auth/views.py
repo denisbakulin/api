@@ -1,57 +1,45 @@
-from fastapi import (APIRouter, BackgroundTasks, Cookie, Depends,
+from fastapi import (APIRouter, Cookie, Depends,
                      HTTPException, Response)
 
 from auth.deps import get_auth_service
 from auth.exceptions import InvalidTokenError
-from auth.schemas import (AccessTokenResponse, AuthCreds)
+from auth.schemas import (AccessTokenResponse, AuthCreds, TelegramAuth)
 from auth.service import AuthService
 from auth.utils import (TokenCreator, TokenTypes, decode_token,
                         set_refresh_token_cookie)
-from mail.utils import EmailSender
-from user.schemas import UserCreate
+
 
 auth_router = APIRouter(prefix="/auth", tags=["🔐 Авторизация"])
 
 @auth_router.post(
-    "/register",
-    summary="Зарегистрироваться в системе",
-    response_model=AccessTokenResponse
-
-)
-async def register_user(
-        user_info: UserCreate,
-        background_tasks: BackgroundTasks,
-        auth_service: AuthService = Depends(get_auth_service),
-
-):
-    pending_access_token, verify_token = await auth_service.register(user_info)
-
-    background_tasks.add_task(
-        EmailSender(user_info.email, "Подтверждение почты").verify_email,
-        token=verify_token,
-        username=user_info.username,
-    )
-
-    return AccessTokenResponse(access_token=pending_access_token)
-
-
-
-@auth_router.post(
     "/login",
-    summary="Войти в аккаунт",
+    summary="Войти в аккаунт по паролю",
     response_model=AccessTokenResponse,
-
 )
-async def login_user(
+async def login_password_user(
         response: Response,
         creds: AuthCreds,
         auth_service: AuthService = Depends(get_auth_service)
 ):
 
-    tokens = await auth_service.login(creds)
+    tokens = await auth_service.login_via_password(creds)
     set_refresh_token_cookie(response, tokens.refresh_token)
     return AccessTokenResponse(access_token=tokens.access_token)
 
+
+@auth_router.post(
+    "/telegram/login",
+    summary="Войти в аккаунт через telegram",
+    response_model=AccessTokenResponse,
+)
+async def login_telegram_user(
+        response: Response,
+        body: TelegramAuth,
+        auth_service: AuthService = Depends(get_auth_service)
+):
+    tokens = await auth_service.login_via_telegram(body.initData)
+    set_refresh_token_cookie(response, tokens.refresh_token)
+    return AccessTokenResponse(access_token=tokens.access_token)
 
 
 @auth_router.post(
@@ -81,42 +69,4 @@ async def refresh_user_token(refresh_token: str = Cookie(None)):
 
     return AccessTokenResponse(access_token=access_token)
 
-
-
-
-@auth_router.get(
-    "/verify-by-email",
-    summary="Подтвердить почту через переход по ссылке",
-    response_model=AccessTokenResponse,
-
-)
-async def verify_by_email(
-        token: str,
-        response: Response,
-        auth_service: AuthService = Depends(get_auth_service)
-):
-
-    tokens = await auth_service.verify_by_email(token)
-    set_refresh_token_cookie(response, tokens.refresh_token)
-
-    return AccessTokenResponse(access_token=tokens.access_token)
-
-
-
-
-@auth_router.get(
-    "/change-email",
-    summary="Сменить почту через переход по ссылке",
-    response_model=AccessTokenResponse,
-
-)
-async def change_email_by_token(
-        token: str,
-        response: Response,
-        auth_service: AuthService = Depends(get_auth_service)
-):
-    tokens = await auth_service.change_email(token)
-    set_refresh_token_cookie(response, tokens.refresh_token)
-
-    return AccessTokenResponse(access_token=tokens.access_token)
 

@@ -40,14 +40,17 @@ class CommentRepository(BaseRepository[Comment]):
     ) -> list[tuple[Topic, int]]:
         stmt = (
             select(
-                Topic, func.count()
+                Topic,
+                func.count(Comment.id)
             )
-            .select_from(Comment)
-            .join(Post, Post.id == Comment.post_id)
-            .where(
-                Comment.user_id == user_id
+            .join(
+                Post, Post.topic_id == Topic.id
             )
-            .group_by(Post.topic_id)
+            .join(
+                Comment, Comment.post_id == Post.id
+            )
+            .where(Comment.user_id == user_id)
+            .group_by(Topic.id)
             .limit(10)
         )
 

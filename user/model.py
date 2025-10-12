@@ -37,19 +37,25 @@ class Settings(BaseORM, IdMixin):
 
 
 
-
+from uuid import uuid4
 class User(BaseORM, IdMixin, TimeMixin):
     __tablename__ = "users"
 
     depends = [("profile", Profile), ("settings", Settings)]
 
-    username: Mapped[str] = mapped_column(nullable=False, unique=True)
-    password: Mapped[str] = mapped_column(nullable=False)
-    email: Mapped[str] = mapped_column(nullable=False, unique=True)
+    tg_id: Mapped[int | None]
+    username: Mapped[str] = mapped_column(
+        nullable=False, unique=True
+    )
+    password: Mapped[str] = mapped_column(nullable=True)
+    email: Mapped[str] = mapped_column(nullable=True, unique=True)
 
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
-    is_verified: Mapped[bool] = mapped_column(Boolean, default=False)
     is_admin: Mapped[bool] = mapped_column(Boolean, default=False)
+
+    @property
+    def password_login(self):
+        return bool(self.password)
 
     profile: Mapped["Profile"] = relationship(
         back_populates="user",

@@ -1,19 +1,19 @@
 from pydantic import Field, BaseModel
 
 from core.schemas import BaseSchema, IdMixinSchema, TimeMixinSchema
-
+from user.schemas import PostUserShow
 
 class PostAllows(BaseSchema):
     allow_comments: bool = Field(default=True)
     allow_reactions: bool = Field(default=True)
-
-class PostBase(PostAllows):
-    title: str = Field(min_length=1, max_length=100)
-    content: str = Field(max_length=5000)
     public: bool = Field(default=True)
 
 
-from user.schemas import PostUserShow
+class PostBase(BaseSchema):
+    title: str = Field(min_length=1, max_length=100)
+    content: str = Field(max_length=5000)
+
+
 
 class PostShow(PostBase, IdMixinSchema, TimeMixinSchema):
     author: PostUserShow
@@ -37,6 +37,9 @@ class FullPostShow(BaseSchema):
 
 
 class PostCreate(PostBase):
+    ...
+
+class UserPostCreate(PostCreate, PostAllows):
     ...
 
 

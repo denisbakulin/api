@@ -15,10 +15,12 @@ class Post(BaseORM, IdMixin, TimeMixin):
     allow_comments: Mapped[bool] = mapped_column(default=True)
     allow_reactions: Mapped[bool] = mapped_column(default=True)
 
-    topic_id: Mapped[int] = mapped_column(ForeignKey("topics.id"))
+    topic_id: Mapped[int | None] = mapped_column(ForeignKey("topics.id"))
     author_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
 
     author: Mapped["User"] = relationship("User", lazy="joined")
     topic: Mapped["User"] = relationship("Topic")
 
-
+    @property
+    def is_personal(self) -> bool:
+        return not bool(self.topic_id)

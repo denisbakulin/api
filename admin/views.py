@@ -3,7 +3,7 @@ from typing import Optional, Type
 from fastapi import APIRouter, Depends
 
 from admin.deps import get_admin_service
-from admin.schemas import  AdminUserShow, AdminUserUpdate, UserFields
+from admin.schemas import AdminUserUpdate, UserFields
 from admin.service import AdminService
 from auth.deps import get_admin
 from core.model import BaseORM, ColumnProps
@@ -157,10 +157,8 @@ class UserAdminView(AdminView, model=User):
                 user_create: UserCreate,
                 user_service: userServiceDep,
                 extra: UserFields = Depends(),
-
         ):
             return await user_service.create_user(user_create, **extra.dict())
-
 
         @self.patch(
             "/{username}",
@@ -212,7 +210,6 @@ from comment.model import Comment
 
 class CommentAdminView(AdminView, model=Comment, delete_=True):
     show = CommentShow
-
 
 
 

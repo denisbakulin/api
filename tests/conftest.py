@@ -106,7 +106,7 @@ async def auth_client(client):
             username="test_user",
             password="12345",
             email="test_user@example.com"
-        ), is_verified=True)
+        ))
 
         users = [
             UserCreate(username=f"user{i}", password="12345", email=f"user{i}@test.com")
@@ -114,7 +114,7 @@ async def auth_client(client):
         ]
 
         for _user in users:
-            _user = await user_service.create_user(_user, is_verified=True)
+            _user = await user_service.create_user(_user)
 
             post = await post_service.create_post(
                 user,

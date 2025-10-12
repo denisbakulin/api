@@ -90,4 +90,27 @@ def set_refresh_token_cookie(response: Response, token):
         path="/"
     )
 
+from urllib.parse import parse_qsl
+import hashlib, hmac
+
+
+BOT_TOKEN="7555036857:AAF51SdEQb8zQGMuGmxvjl9H2LND_oNiJ1w"
+
+
+from auth.schemas import TelegramUser
+from auth.exceptions import TelegramAuthError
+
+def check_telegram_auth(data: str) -> TelegramUser:
+    parsed = dict(parse_qsl(data))
+    hash_ = parsed.pop("hash", None)
+
+    data_check_string = "\n".join(f"{k}={v}" for k, v in sorted(parsed.items()))
+    secret_key = hashlib.sha256(BOT_TOKEN.encode()).digest()
+    calc_hash = hmac.new(secret_key, data_check_string.encode(), hashlib.sha256).hexdigest()
+
+    if calc_hash != hash_:
+        raise TelegramAuthError("Некорректный токен авторизации initData")
+
+    return TelegramUser.model_validate(parsed.get("user"))
+
 

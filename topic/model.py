@@ -20,7 +20,7 @@ class TopicOffer(BaseORM, IdMixin, TimeMixin):
     author_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     status: Mapped[str]  #rejected #pending #approve
 
-    author: Mapped["User"] = relationship("User")
+    author: Mapped["User"] = relationship("User", lazy="joined")
 
 
 

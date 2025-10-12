@@ -1,6 +1,0 @@
-{% extends "base.html" %}
-
-{% block content %}
-<span>Ваш аккаунт успешно зарегистрирован, для активации необходимо подтвердить почту:</span>
-<a href="http://localhost:8000/auth/verify-by-email?token={{ verify_token }}">Подтвердить почту</a>
-{% endblock %}

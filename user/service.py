@@ -4,15 +4,19 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from admin.schemas import AdminUserUpdate
 from auth.exceptions import InvalidPasswordError
-from core.exceptions import EntityAlreadyExists
+from core.exceptions import EntityAlreadyExists, EntityBadRequestError
 from core.service import BaseService
 from helpers.search import Pagination
 from user.model import Profile, User, Settings
 from user.repository import UserRepository
-from user.schemas import UserCreate, UserUpdate, UserSettings
+from user.schemas import UserCreate, UserUpdate, PasswordCreate,UserSettings
 from user.utils import (UserSearchParams, generate_hashed_password,
                         verify_password)
 from direct.service import DirectChatService
+from uuid import uuid4
+
+from auth.schemas import TelegramUser
+
 
 class UserService(BaseService[User, UserRepository]):
     def __init__(self, session: AsyncSession):
@@ -20,7 +24,9 @@ class UserService(BaseService[User, UserRepository]):
         self.direct_chat_service = DirectChatService(session)
         self.base_serv = BaseService(Profile, session)
 
-    async def create_user(self, user_data: UserCreate, is_verified=False, is_admin=False) -> User:
+
+
+    async def create_user(self, user_data: UserCreate, is_admin=False) -> User:
         await self.check_already_exists(username=user_data.username)
         await self.check_already_exists(email=user_data.email)
 
@@ -30,22 +36,32 @@ class UserService(BaseService[User, UserRepository]):
 
         user = self.repository.create_user(
             **user_data.model_dump(),
-            is_verified=is_verified,
             is_admin=is_admin
         )
-
-        await self.update_item(
-            user,
-            profile=Profile(
-                bio=user_data.bio,
-                avatar=user_data.avatar,
-            )
-        )
-
 
         await self.direct_chat_service.create_favorites_chat(user)
 
         return user
+
+    async def login_user_via_telegram(self, tg_user: TelegramUser) -> User:
+        user = await self.repository.get_user(tg_id=tg_user.id)
+
+        if user is not None:
+            return user
+
+        user_exists = await self.repository.exists(username=tg_user.username)
+
+        if user_exists:
+            tg_user.username = str(uuid4().hex[:10])
+
+        user = await self.create_item(
+            tg_id=tg_user.id,
+            username=tg_user.username,
+        )
+
+        return user
+
+
 
     async def get_user_by_id(self, user_id: int) -> User:
         return await self.get_item_by_id(user_id)
@@ -65,7 +81,6 @@ class UserService(BaseService[User, UserRepository]):
         return await self.create_user(
             user_data=admin_data,
             is_admin=True,
-            is_verified=True
         )
 
 
@@ -82,6 +97,15 @@ class UserService(BaseService[User, UserRepository]):
                 )
             await self.update_item(user, username=update_info.username)
 
+        if update_info.email:
+            user_existing = await self.repository.get_user(email=update_info.email)
+
+            if user_existing and user_existing.id != user.id:
+                raise EntityAlreadyExists(
+                    entity="User",
+                    field="email",
+                    value=update_info.email
+                )
 
         await self.base_serv.update_item(user.profile, **update_info.profile.model_dump(exclude_none=True))
 
@@ -96,14 +120,11 @@ class UserService(BaseService[User, UserRepository]):
 
         await self.update_item(user, password=password)
 
+    async def set_password(self, user: User, pwd: PasswordCreate) -> User:
+        if user.password_login:
+            raise EntityBadRequestError("Пароль", "Пароль уже установлен")
 
-
-    async def change_email(self, user: User, email: str):
-        await self.check_already_exists(email=email)
-
-        await self.update_item(user, email=email, is_verified=False)
-
-
+        return await self.update_item(user, password=pwd.password)
 
     async def search_users(self, search: UserSearchParams, pagination: Pagination) -> list[User]:
         return await self.search_items(

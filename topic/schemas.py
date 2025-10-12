@@ -15,9 +15,13 @@ class UserCommentsCountOfTopicShow(BaseSchema):
     count: int
     topic: BaseTopic
 
+class UserUsername(BaseSchema):
+    username: str
+
+
 class TopicOfferShow(BaseTopic):
     status: str
-    author: UserShow
+    author: UserUsername
 
 
 

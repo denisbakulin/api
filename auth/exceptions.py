@@ -8,6 +8,10 @@ class InvalidTokenError(AuthError):
     """Ошибка JWT"""
 
 
+class TelegramAuthError(AuthError):
+    """Ошибка входа через telegram"""
+
+
 class InvalidPasswordError(AuthError):
     """Ошибка некорректного пароля"""
     

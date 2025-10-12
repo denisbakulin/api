@@ -15,7 +15,7 @@ class PostService(BaseService[Post, PostRepository]):
     def __init__(self, session: AsyncSession):
         super().__init__(Post, session, PostRepository)
 
-    async def create_post(self, user: User, post_info: PostCreate, topic_id: int) -> Post:
+    async def create_post(self, user: User, post_info: PostCreate, topic_id: int | None = None) -> Post:
 
         post = await self.create_item(**post_info.model_dump(), author_id=user.id, topic_id=topic_id)
 

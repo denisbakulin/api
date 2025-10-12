@@ -1,6 +1,0 @@
-{% extends "base.html" %}
-
-{% block content %}
-<span>Вы пытались изменить почту, для подтверждения перейдите по ссылке:</span>
-<a href="http://localhost:8000/auth/change-email?token={{ change_email_token }}">Подтвердить смену почты</a>
-{% endblock %}

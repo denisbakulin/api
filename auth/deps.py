@@ -52,14 +52,6 @@ async def get_current_user(
 
 
 
-
-async def get_verified_user(
-    user: User = Depends(get_current_user),
-) -> User:
-    if user.is_verified:
-        return user
-    raise HTTPException(401, "Почта не подтверждена")
-
 async def get_admin(
     user: User = Depends(get_current_user),
 ) -> User:
@@ -75,6 +67,5 @@ async def get_auth_service(
 
 
 adminDep = Annotated[User, Depends(get_admin)]
-verifiedUserDep = Annotated[User, Depends(get_verified_user)]
 currentUserDep = Annotated[User, Depends(get_current_user)]
 authServiceDep = Annotated[AuthService, Depends(get_auth_service)]

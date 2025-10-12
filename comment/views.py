@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from auth.deps import verifiedUserDep
+from auth.deps import currentUserDep
 from comment.deps import commentDep, commentServiceDep
 from comment.schemas import CommentShow, CommentUpdate
 
@@ -25,7 +25,7 @@ async def get_comment(
 )
 async def update_comment(
         comment: commentDep,
-        user: verifiedUserDep,
+        user: currentUserDep,
         update_info: CommentUpdate,
         comment_service: commentServiceDep,
 ):
