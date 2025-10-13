@@ -57,11 +57,8 @@ class CommentRepository(BaseRepository[Comment]):
 
         result = await self.session.execute(stmt)
 
-        q = result.tuples().all()
 
-        print(q, 1111111111111111111111111111111111111111111)
-
-        return [*q]
+        return [*result.tuples().all()]
 
 
 

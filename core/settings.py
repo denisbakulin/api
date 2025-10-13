@@ -7,12 +7,6 @@ from pydantic_settings import BaseSettings
 
 
 class BaseConfig(BaseSettings):
-
-    @classmethod
-    @lru_cache
-    def get(cls) -> Self:
-        return cls()
-
     class Config:
         mode = getenv("MODE", "TEST")
         env_file = ".env" if mode == "DEV" else ".env.test"
@@ -59,6 +53,12 @@ class AnonUserSettings(BaseConfig):
     class Config(BaseConfig.Config):
         env_prefix = "ANON_"
 
+
+app_settings = AppSettings()
+jwt_auth_settings = JWTAuthSettings()
+tg_auth_settings = TGAuthSettings()
+super_admin_settings = SuperAdminSettings()
+anon_settings = AnonUserSettings()
 
 
 

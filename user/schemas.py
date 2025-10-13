@@ -27,7 +27,7 @@ class UserProfile(BaseSchema):
 
 
 class UserUpdate(BaseSchema):
-    username: Optional[str] = Field(default=None)
+    username: str | None = None
     email: EmailStr | None = None
     profile: UserProfile | None = None
 

@@ -76,11 +76,14 @@ async def get_post(
 async def update_post(
         post: postDep,
         user: currentUserDep,
-        update_info: PostUpdate,
+        post_update: PostUpdate,
         post_service: postServiceDep,
 ):
 
-    return await post_service.update_post(post, user, update_info)
+    return await post_service.update_post(
+        post=post, post_update=post_update, user=user
+    )
+
 
 
 @post_router.post(
@@ -91,14 +94,12 @@ async def update_post(
 )
 async def create_comment(
         post: postDep,
-        comment_info: CommentCreate,
+        comment_create: CommentCreate,
         comment_service: commentServiceDep,
         user: currentUserDep
 ):
     return await comment_service.create_comment(
-        comment_info,
-        user=user,
-        post=post
+        comment_create=comment_create, user=user, post=post
     )
 
 @post_router.post(
@@ -110,14 +111,12 @@ async def create_comment(
 async def create_comment_as_anon(
         post: postDep,
         anon: anonDep,
-        comment_info: CommentCreate,
+        comment_create: CommentCreate,
         comment_service: commentServiceDep,
 
 ):
     return await comment_service.create_comment(
-        comment_info,
-        user=anon,
-        post=post
+        comment_create=comment_create, user=anon, post=post
     )
 
 
@@ -134,7 +133,9 @@ async def get_post_comments(
         comment_service: commentServiceDep,
         pagination: Pagination = Depends(),
 ):
-    return await comment_service.get_post_comments(post=post, pagination=pagination)
+    return await comment_service.get_post_comments(
+        post=post, pagination=pagination
+    )
 
 
 
@@ -144,7 +145,6 @@ async def get_post_comments(
     summary="Оставить реакцию под постом",
     response_model=ReactionShow,
     status_code=status.HTTP_201_CREATED
-
 )
 async def add_post_reaction(
         post: postDep,
@@ -152,22 +152,25 @@ async def add_post_reaction(
         user: currentUserDep,
         like_service: reactionServiceDep,
 ):
-    return await like_service.add_reaction(user, post, reaction)
+    return await like_service.add_reaction(
+        user=user, post=post, reaction_type=reaction
+    )
 
 
 @post_router.get(
     "/{slug}/reactions",
     summary="Получить реакци поста",
     response_model=list[ReactionShow],
-
 )
 async def get_post_reactions(
         post: postDep,
-        t: PostReactionsGetParams,
+        type: PostReactionsGetParams,
         like_service: reactionServiceDep,
         pagination: Pagination = Depends()
 ):
-    return await like_service.get_post_reactions(post, t, pagination)
+    return await like_service.get_post_reactions(
+        post=post, reaction_type=type, pagination=pagination
+    )
 
 
 

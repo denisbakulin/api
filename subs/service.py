@@ -29,7 +29,7 @@ class SubscribeService(BaseService[Subscribe, SubscribeRepository]):
 
 
     async def get_user_subscribes(self, user: User, pagination: Pagination) -> list[Subscribe]:
-        return await self.repository.get_any_by(subscriber_id=user.id, **pagination.get())
+        return await self.repository.get_any_by(subscriber_id=user.id, **pagination.dict())
 
 
 

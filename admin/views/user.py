@@ -48,3 +48,4 @@ class UserAdminView(AdminView, model=User):
 
         ):
             return await user_service.edit_user_role(admin, user, role=role)
+

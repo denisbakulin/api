@@ -24568,3 +24568,55 @@
 2025-10-13T00:20:28.495384+0000 INFO Request: POST http://localhost:8002/topics/offer from 127.0.0.1
 2025-10-13T00:20:28.547258+0000 INFO Response: POST http://localhost:8002/topics/offer Status: 201 Time: 0.0620s
 2025-10-13T00:20:52.843389+0000 INFO Request: POST http://localhost:8002/topics/offer/2/process from 127.0.0.1
+2025-10-13T00:21:39.740155+0000 INFO Request: GET http://localhost:8002/docs from 127.0.0.1
+2025-10-13T00:21:39.741115+0000 INFO Response: GET http://localhost:8002/docs Status: 200 Time: 0.0000s
+2025-10-13T00:21:39.947801+0000 INFO Request: GET http://localhost:8002/openapi.json from 127.0.0.1
+2025-10-13T00:21:40.034837+0000 INFO Response: GET http://localhost:8002/openapi.json Status: 200 Time: 0.0940s
+2025-10-13T00:21:52.401007+0000 INFO Request: POST http://localhost:8002/auth/login from 127.0.0.1
+2025-10-13T00:21:53.031974+0000 INFO Response: POST http://localhost:8002/auth/login Status: 200 Time: 0.6410s
+2025-10-13T00:22:22.422604+0000 INFO Request: POST http://localhost:8002/topics/offer/2/process from 127.0.0.1
+2025-10-13T00:22:28.464935+0000 INFO Request: POST http://localhost:8002/topics/offer/2/process from 127.0.0.1
+2025-10-13T00:22:28.614781+0000 INFO Response: POST http://localhost:8002/topics/offer/2/process Status: 201 Time: 0.1560s
+2025-10-13T00:22:41.561700+0000 INFO Request: GET http://localhost:8002/topics/offer?offset=0&limit=10 from 127.0.0.1
+2025-10-13T00:22:41.616661+0000 INFO Response: GET http://localhost:8002/topics/offer?offset=0&limit=10 Status: 200 Time: 0.0470s
+2025-10-13T00:23:03.762163+0000 INFO Request: GET http://localhost:8002/topics/news/posts?offset=0&limit=10 from 127.0.0.1
+2025-10-13T00:23:03.802212+0000 INFO Response: GET http://localhost:8002/topics/news/posts?offset=0&limit=10 Status: 200 Time: 0.0460s
+2025-10-13T00:53:21.682119+0000 INFO Request: GET http://localhost:8002/docs from 127.0.0.1
+2025-10-13T00:53:21.684110+0000 INFO Response: GET http://localhost:8002/docs Status: 200 Time: 0.0000s
+2025-10-13T00:53:21.917719+0000 INFO Request: GET http://localhost:8002/openapi.json from 127.0.0.1
+2025-10-13T00:53:22.017708+0000 INFO Response: GET http://localhost:8002/openapi.json Status: 200 Time: 0.1090s
+2025-10-13T00:53:31.352074+0000 INFO Request: GET http://localhost:8002/comments/1 from 127.0.0.1
+2025-10-13T00:53:37.107829+0000 INFO Request: GET http://localhost:8002/posts/top?field=like from 127.0.0.1
+2025-10-13T00:53:37.125845+0000 INFO Response: GET http://localhost:8002/posts/top?field=like Status: 200 Time: 0.0160s
+2025-10-13T00:53:48.289845+0000 INFO Request: GET http://localhost:8002/topics?offset=0&limit=10 from 127.0.0.1
+2025-10-13T00:53:48.325853+0000 INFO Response: GET http://localhost:8002/topics?offset=0&limit=10 Status: 200 Time: 0.0470s
+2025-10-13T18:56:53.253271+0000 INFO Request: GET http://localhost:8000/ from 127.0.0.1
+2025-10-13T18:56:53.262671+0000 ERROR Response: GET http://localhost:8000/ Status: 404 Time: 0.0000s
+2025-10-13T18:56:53.348227+0000 INFO Request: GET http://localhost:8000/favicon.ico from 127.0.0.1
+2025-10-13T18:56:53.352845+0000 ERROR Response: GET http://localhost:8000/favicon.ico Status: 404 Time: 0.0000s
+2025-10-13T18:56:57.650508+0000 INFO Request: GET http://localhost:8000/docs from 127.0.0.1
+2025-10-13T18:56:57.650508+0000 INFO Response: GET http://localhost:8000/docs Status: 200 Time: 0.0000s
+2025-10-13T18:56:57.823215+0000 INFO Request: GET http://localhost:8000/openapi.json from 127.0.0.1
+2025-10-13T18:56:57.912947+0000 INFO Response: GET http://localhost:8000/openapi.json Status: 200 Time: 0.0940s
+2025-10-13T18:57:03.892946+0000 INFO Request: POST http://localhost:8000/auth/login from 127.0.0.1
+2025-10-13T18:57:04.553189+0000 INFO Response: POST http://localhost:8000/auth/login Status: 200 Time: 0.6560s
+2025-10-13T18:57:22.778740+0000 INFO Request: GET http://localhost:8000/users/search?q=anon&field=username&strict=false&offset=0&limit=10 from 127.0.0.1
+2025-10-13T18:57:22.842868+0000 INFO Response: GET http://localhost:8000/users/search?q=anon&field=username&strict=false&offset=0&limit=10 Status: 200 Time: 0.0620s
+2025-10-13T18:57:47.542710+0000 INFO Request: GET http://localhost:8000/users/search?q=admin&field=username&strict=false&offset=0&limit=10 from 127.0.0.1
+2025-10-13T18:57:47.562783+0000 INFO Response: GET http://localhost:8000/users/search?q=admin&field=username&strict=false&offset=0&limit=10 Status: 200 Time: 0.0310s
+2025-10-13T18:59:11.900030+0000 INFO Request: GET http://localhost:8000/topics/offer?offset=0&limit=10 from 127.0.0.1
+2025-10-13T18:59:11.942612+0000 INFO Response: GET http://localhost:8000/topics/offer?offset=0&limit=10 Status: 200 Time: 0.0470s
+2025-10-13T18:59:26.252057+0000 INFO Request: GET http://localhost:8000/direct?offset=0&limit=10 from 127.0.0.1
+2025-10-13T19:02:09.471740+0000 INFO Request: GET http://localhost:8000/docs from 127.0.0.1
+2025-10-13T19:02:09.471740+0000 INFO Response: GET http://localhost:8000/docs Status: 200 Time: 0.0000s
+2025-10-13T19:02:09.731754+0000 INFO Request: GET http://localhost:8000/openapi.json from 127.0.0.1
+2025-10-13T19:02:09.824563+0000 INFO Response: GET http://localhost:8000/openapi.json Status: 200 Time: 0.0780s
+2025-10-13T19:02:18.591808+0000 INFO Request: POST http://localhost:8000/auth/login from 127.0.0.1
+2025-10-13T19:02:19.121658+0000 INFO Response: POST http://localhost:8000/auth/login Status: 200 Time: 0.5160s
+2025-10-13T19:02:34.121362+0000 INFO Request: GET http://localhost:8000/direct?offset=0&limit=10 from 127.0.0.1
+2025-10-13T19:02:34.171725+0000 INFO Response: GET http://localhost:8000/direct?offset=0&limit=10 Status: 200 Time: 0.0620s
+2025-10-13T19:03:09.821238+0000 INFO Request: GET http://localhost:8000/me from 127.0.0.1
+2025-10-13T19:03:09.831435+0000 INFO Response: GET http://localhost:8000/me Status: 200 Time: 0.0160s
+2025-10-13T19:03:28.711038+0000 INFO Request: GET http://localhost:8000/me/settings from 127.0.0.1
+2025-10-13T19:03:28.731163+0000 INFO Response: GET http://localhost:8000/me/settings Status: 200 Time: 0.0150s
+2025-10-13T19:03:37.830975+0000 INFO Request: GET http://localhost:8000/me/comments?offset=0&limit=10 from 127.0.0.1

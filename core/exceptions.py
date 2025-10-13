@@ -49,8 +49,6 @@ class EntityAlreadyExists(AppError):
         self.fields = fields
 
 
-
-
 class EntityLockedError(AppError):
     """Ресурс заблокирован"""
 

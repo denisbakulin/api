@@ -19,8 +19,6 @@ class DirectChat(BaseORM, IdMixin, TimeMixin):
     first_user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     second_user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
 
-    banned_user_id: Mapped[int | None] = mapped_column(ForeignKey("users.id"), nullable=True)
-
     first_user = relationship(
         "User",
         foreign_keys=[first_user_id],
@@ -48,6 +46,7 @@ class DirectUserSettings(BaseORM):
 
     enable_notifications: Mapped[bool] = mapped_column(default=True)
     chat_name: Mapped[str | None] = mapped_column(nullable=True)
+    banned: Mapped[bool] = mapped_column(default=False)
 
 
 

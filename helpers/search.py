@@ -6,11 +6,6 @@ class Pagination(BaseModel):
     offset: int = Field(ge=0, default=0)
     limit: int = Field(ge=0, le=15, default=10)
 
-    def get(self) -> dict[str, int]:
-        return dict(
-            offset=self.offset,
-            limit=self.limit
-        )
 
 def search_param_fabric(allowed_fields: type[str]):
     class SearchParams:

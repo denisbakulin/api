@@ -24,12 +24,14 @@ async def get_comment(
     summary="Изменить комментарий"
 )
 async def update_comment(
-        comment: commentDep,
         user: currentUserDep,
-        update_info: CommentUpdate,
+        comment: commentDep,
+        comment_update: CommentUpdate,
         comment_service: commentServiceDep,
 ):
-    return await comment_service.update_comment(comment, user, update_info)
+    return await comment_service.update_comment(
+        comment=comment, comment_update=comment_update, user=user,
+    )
 
 
 

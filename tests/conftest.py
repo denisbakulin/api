@@ -116,15 +116,9 @@ async def auth_client(client):
         for _user in users:
             _user = await user_service.create_user(_user)
 
-            post = await post_service.create_post(
-                user,
-                PostCreate(title="test_post", content="интересно")
-            )
+            post = await post_service.create_post(user, PostCreate(title="test_post", content="интересно"))
 
-            await comment_service.create_comment(
-                CommentCreate(parent_id=None, content="коммент"),
-                _user, post
-            )
+            await comment_service.create_comment(CommentCreate(parent_id=None, content="коммент"), _user, post)
 
             await reaction_service.add_reaction(
                 _user, post, choice(["like", "dislike", "love"])

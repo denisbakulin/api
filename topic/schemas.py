@@ -20,7 +20,7 @@ class TopicOfferShow(CreateTopicOffer, IdMixinSchema):
 
 class TopicShow(CreateTopic):
     approved_user: UserUsername
-    suggested_by_user: UserUsername | None
+    suggested_by_user: UserUsername
 
 
 class AddTopicByOffer(CreateTopic):

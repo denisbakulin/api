@@ -30,11 +30,11 @@ async def get_me(
     summary="Изменить информацию текущего пользователя"
 )
 async def patch_my_info(
-        user_updates: UserUpdate,
+        user_update: UserUpdate,
         user: currentUserDep,
         user_service: userServiceDep,
 ):
-    await user_service.update_user(user, user_updates)
+    await user_service.update_user(user=user, user_update=user_update)
 
 
 
@@ -48,7 +48,9 @@ async def change_password(
         user: currentUserDep,
         user_service: userServiceDep,
 ):
-    await user_service.change_password(user, pwd.old_password, pwd.new_password)
+    await user_service.change_password(
+        user, pwd.old_password, pwd.new_password
+    )
 
 
 

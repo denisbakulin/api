@@ -1,7 +1,3 @@
-from typing import Optional
-
-from pydantic import Field
-
 from core.schemas import BaseSchema, IdMixinSchema, TimeMixinSchema
 from post.schemas import PostSlug
 from user.schemas import UserUsername

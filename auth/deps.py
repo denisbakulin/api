@@ -7,13 +7,17 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from auth.exceptions import InvalidTokenError
 from auth.schemas import TokenInfo
 from auth.service import AuthService
-from auth.utils import TokenTypes, decode_token
+from auth.utils import decode_token
 from core.db import get_session
 from core.exceptions import EntityLockedError
 from user.deps import get_user_service
 from user.model import User
 from user.service import UserService
+from user.model import UserRoleEnum
+from typing import Callable
+from operator import ge
 
+Operator = Callable[[UserRoleEnum, UserRoleEnum], bool]
 security = HTTPBearer()
 
 async def get_user_token(
@@ -41,20 +45,13 @@ async def get_current_user(
         message=f"Пользователь {user.username} временно заблокирован"
     )
 
-from user.model import UserRoleEnum
 
 
-def get_role(role: UserRoleEnum):
+def role_validate(role: UserRoleEnum, operator: Operator = ge):
+    """Проверяет права пользователя"""
+
     async def wrapper(user: User = Depends(get_current_user)):
-        if user.role == role:
-            return user
-        raise HTTPException(detail="Недостаточно прав", status_code=403)
-    return wrapper
-
-
-def ge_role(role: UserRoleEnum):
-    async def wrapper(user: User = Depends(get_current_user)):
-        if user.role >= role:
+        if operator(user.role, role):
             return user
         raise HTTPException(detail="Недостаточно прав", status_code=403)
     return wrapper

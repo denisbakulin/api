@@ -70,7 +70,7 @@ class BaseService[T, R]:
             pagination: Pagination,
             **params
     ) -> list[T]:
-        return await self.repository.get_any_by(**params, **pagination.get())
+        return await self.repository.get_any_by(**params, **pagination.dict())
 
 
 
@@ -120,7 +120,7 @@ class BaseService[T, R]:
         if search.strict:
             return await self.repository.get_any_by(
                 **{search.field: search.q},
-                **pagination.get(),
+                **pagination.dict(),
                 **filters,
                 inner_props=inner_props,
 
@@ -128,9 +128,8 @@ class BaseService[T, R]:
         return await self.repository.search(
             field=search.field,
             query=search.q,
-            **pagination.get(),
+            **pagination.dict(),
             **filters,
             inner_props=inner_props,
-
         )
 

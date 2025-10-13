@@ -71,22 +71,20 @@ async def init_db(app: FastAPI):
     from user.schemas import UserCreate
 
     from admin.service import AdminUserService
-    from core.settings import AnonUserSettings, SuperAdminSettings
+    from core.settings import anon_settings, super_admin_settings
     from topic.service import TopicService
 
-    admin_data = SuperAdminSettings.get()
-    anon_data = AnonUserSettings.get()
 
     async with session_factory() as session:
         user_service = AdminUserService(session=session)
         topic_service = TopicService(session=session)
 
         await user_service.create_super_admin(
-            UserCreate(**admin_data.dict())
+            UserCreate(**super_admin_settings.dict())
         )
 
         anon = await user_service.create_anon(
-            UserCreate(**anon_data.dict())
+            UserCreate(**anon_settings.dict())
         )
 
         await topic_service.create_news_topic(

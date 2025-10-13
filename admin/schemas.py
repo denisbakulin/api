@@ -1,17 +1,9 @@
-from pydantic import BaseModel, EmailStr, Field, field_validator
-
-from user.model import UserRoleEnum
-from user.schemas import UserCreate, UserShow, UserShowMe
+from user.schemas import  UserUpdate
 
 
-class AdminUserUpdate(UserShow):
+class AdminUserUpdate(UserUpdate):
+    is_active: bool | None = None
 
-    username: str | None = None
-    email: EmailStr | None = None
-
-
-class UserRole(BaseModel):
-    role: int
 
 
 

@@ -34,7 +34,13 @@ class PostRepository(BaseRepository[Post]):
         return await self.search(field, query, offset=offset, limit=limit)
 
 
-    async def get_posts_by_user_subscribes(self, user_id: int, offset: int, limit: int) -> list[Post]:
+    async def get_posts_by_user_subscribes(
+            self,
+            user_id: int,
+            offset: int,
+            limit: int
+    ) -> list[Post]:
+
         subs = await self.subs_repository.get_any_by(
             subscriber_id=user_id,  offset=offset, limit=limit
         )

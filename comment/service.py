@@ -25,7 +25,7 @@ class CommentService(BaseService[Comment, CommentRepository]):
 
     async def create_comment(
             self,
-            comment_data: CommentCreate,
+            comment_create: CommentCreate,
             user: User,
             post: Post
     ) -> Comment:
@@ -35,8 +35,8 @@ class CommentService(BaseService[Comment, CommentRepository]):
                 f"Под постом [{post.slug}] нельзя оставлять комментарии"
             )
 
-        if comment_data.parent_id is not None:
-            parent = await self.get_comment_by_id(comment_data.parent_id)
+        if comment_create.parent_id is not None:
+            parent = await self.get_comment_by_id(comment_create.parent_id)
             if parent.post_id != post.id:
                 raise EntityBadRequestError(
                     "Comment",
@@ -44,7 +44,7 @@ class CommentService(BaseService[Comment, CommentRepository]):
                 )
 
         comment = await self.create_item(
-            **comment_data.model_dump(exclude_none=True),
+            **comment_create.model_dump(exclude_none=True),
             user_id=user.id, post_id=post.id,
         )
 
@@ -61,8 +61,8 @@ class CommentService(BaseService[Comment, CommentRepository]):
     async def update_comment(
             self,
             comment: Comment,
+            comment_update: CommentUpdate,
             user: User,
-            update_data: CommentUpdate
     ) -> Comment:
 
         if comment.user_id != user.id:
@@ -71,7 +71,7 @@ class CommentService(BaseService[Comment, CommentRepository]):
                 f"Комментарий id={comment.id} не принадлежит user={user.username}"
             )
 
-        await self.update_item(comment, **update_data.model_dump())
+        await self.update_item(comment, **comment_update.model_dump())
 
         return comment
 
@@ -79,10 +79,10 @@ class CommentService(BaseService[Comment, CommentRepository]):
         return await self.get_item_by_id(comment_id)
 
     async def get_post_comments(self, post: Post, pagination: Pagination) -> list[Comment]:
-        return await self.repository.get_any_by(post_id=post.id, **pagination.get())
+        return await self.repository.get_any_by(post_id=post.id, **pagination.dict())
 
     async def get_user_comments(self, user: User, pagination: Pagination) -> list[Comment]:
-        return await self.repository.get_any_by(user_id=user.id, **pagination.get())
+        return await self.repository.get_any_by(user_id=user.id, **pagination.dict())
 
 
     async def get_top_themes_of_user(

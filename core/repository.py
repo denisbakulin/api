@@ -36,6 +36,7 @@ class BaseRepository[T]:
         """Возвращает отфильтрованный и отсортированый список записей
         по заданным параметрам и фильтрам
        """
+
         if lines:
             stmt = select(*lines)
         else:
@@ -157,6 +158,7 @@ class BaseRepository[T]:
         result = await self.session.execute(stmt)
 
         return list(result.scalars().all())
+
 
     def _process_stmt_with_inner_fields(self, inner_props: dict[str, Any] | None, stmt: Q) -> Q:
         """

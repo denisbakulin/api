@@ -6,10 +6,14 @@ from post.schemas import PostShow
 from subs.deps import subscribeServiceDep
 from user.deps import userDep
 
-subs_router = APIRouter(prefix="/subs", tags=["🔔 Подписки"])
 
 from post.deps import postServiceDep
 from subs.schemas import SubscribeShow
+
+
+subs_router = APIRouter(prefix="/subs", tags=["🔔 Подписки"])
+
+
 
 
 @subs_router.get(
@@ -22,7 +26,9 @@ async def get_subs(
         subscribe_service: subscribeServiceDep,
         pagination: Pagination = Depends()
 ):
-    return await subscribe_service.get_user_subscribes(user, pagination)
+    return await subscribe_service.get_items_by(
+        subscriber_id=user.id, pagination=pagination
+    )
 
 
 @subs_router.get(
@@ -35,7 +41,9 @@ async def get_subs_content(
         post_service: postServiceDep,
         pagination: Pagination = Depends()
 ):
-    return await post_service.repository.get_posts_by_user_subscribes(user.id, **pagination.get())
+    return await post_service.repository.get_posts_by_user_subscribes(
+        user_id=user.id, **pagination.dict()
+    )
 
 
 @subs_router.post(
@@ -48,7 +56,9 @@ async def subscribe(
         creator: userDep,
         subscribe_service: subscribeServiceDep,
 ):
-    return await subscribe_service.process_subscribe(user, creator)
+    return await subscribe_service.process_subscribe(
+        subscriber=user, creator=creator
+    )
 
 
 

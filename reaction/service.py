@@ -12,6 +12,7 @@ from reaction.model import Reaction
 from reaction.repository import ReactionRepository
 from user.model import User
 
+from reaction.types import PostReactionsSetParams
 
 class ReactionService(BaseService[Reaction, ReactionRepository]):
 
@@ -19,7 +20,7 @@ class ReactionService(BaseService[Reaction, ReactionRepository]):
         super().__init__(Reaction, session, ReactionRepository)
         self.ws_manager = WebSocketManager()
 
-    async def add_reaction(self, user: User, post: Post, reaction_type: str):
+    async def add_reaction(self, user: User, post: Post, reaction_type: PostReactionsSetParams):
         if not post.allow_reactions:
             raise EntityBadRequestError(
                 "Reaction",
@@ -45,20 +46,20 @@ class ReactionService(BaseService[Reaction, ReactionRepository]):
 
 
     async def get_post_reactions(self, post: Post, reaction_type: str, pagination: Pagination) -> list[Reaction]:
-        default_get = partial(self.repository.get_any_by, post_id=post.id, **pagination.get())
+        default_get = partial(self.repository.get_any_by, post_id=post.id, **pagination.dict())
 
         return await self._get_reactions(default_get, reaction_type)
 
 
     async def get_user_reactions(self, user: User, reaction_type: str, pagination: Pagination) -> list[Reaction]:
-        default_get = partial(self.repository.get_any_by, user_id=user.id, **pagination.get())
+        default_get = partial(self.repository.get_any_by, user_id=user.id, **pagination.dict())
 
         return await self._get_reactions(default_get, reaction_type)
 
 
     async def get_post_reaction_count(self, post: Post) -> PostReactions:
         reactions = await self.repository.get_post_reaction_count(post=post)
-        print(PostReactions(**reactions), reactions)
+
         return PostReactions(**reactions)
 
     async def _get_reactions(self, default, reaction):

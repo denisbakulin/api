@@ -1,4 +1,3 @@
-from typing import Optional
 from uuid import uuid4
 
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -9,9 +8,9 @@ from core.exceptions import EntityBadRequestError
 from core.service import BaseService
 from direct.service import DirectChatService
 from helpers.search import Pagination
-from user.model import Profile, Settings, User, UserRoleEnum
+from user.model import Profile, Settings, User
 from user.repository import UserRepository
-from user.schemas import PasswordCreate, UserCreate, UserSettings, UserUpdate
+from user.schemas import PasswordCreate, UserCreate, UserSettings, UserUpdate, PasswordChange
 from user.utils import (UserSearchParams, generate_hashed_password,
                         verify_password)
 
@@ -23,16 +22,16 @@ class UserService(BaseService[User, UserRepository]):
         self.profile_service = BaseService(Profile, session)
 
 
-    async def create_user(self, user_data: UserCreate) -> User:
-        await self.check_already_exists(username=user_data.username)
-        await self.check_already_exists(email=user_data.email)
+    async def create_user(self, user_create: UserCreate) -> User:
+        await self.check_already_exists(username=user_create.username)
+        await self.check_already_exists(email=user_create.email)
 
-        hashed_password = generate_hashed_password(password=user_data.password)
+        hashed_password = generate_hashed_password(password=user_create.password)
 
-        user_data.password = hashed_password
+        user_create.password = hashed_password
 
         user = self.repository.create_user(
-            **user_data.model_dump(),
+            **user_create.model_dump(),
         )
 
         await self.direct_chat_service.create_favorites_chat(user)
@@ -67,11 +66,11 @@ class UserService(BaseService[User, UserRepository]):
         return await self.get_item_by(username=username)
 
 
-    async def update_user(self, user: User, update_info: UserUpdate) -> User:
-        await self.check_already_exists(username=update_info.username)
-        await self.check_already_exists(email=update_info.email)
+    async def update_user(self, user: User, user_update: UserUpdate) -> User:
+        await self.check_already_exists(username=user_update.username)
+        await self.check_already_exists(email=user_update.email)
 
-        user_data = update_info.model_dump(exclude_none=True)
+        user_data = user_update.model_dump(exclude_none=True)
         profile_data: dict | None = user_data.pop("profile", None)
 
         await self.update_item(user, **user_data)
@@ -84,11 +83,11 @@ class UserService(BaseService[User, UserRepository]):
 
 
 
-    async def change_password(self, user: User, old_password, new_password):
-        if not verify_password(old_password, user.password):
+    async def change_password(self, user: User, pwd: PasswordChange):
+        if not verify_password(pwd.old_password, user.password):
             raise InvalidPasswordError()
 
-        password = generate_hashed_password(new_password)
+        password = generate_hashed_password(pwd.new_password)
 
         await self.update_item(user, password=password)
 

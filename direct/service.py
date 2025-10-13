@@ -13,12 +13,44 @@ from direct.schemas import (DirectChatShow, DirectUserSettingsSchema,
                             MessageCreate)
 from helpers.search import Pagination
 from user.model import User
+from asyncio import gather
 
 
 class DirectUserSettingsService(BaseService[DirectUserSettings, BaseRepository]):
 
     def __init__(self, session: AsyncSession):
         super().__init__(DirectUserSettings, session)
+
+
+    async def init_settings(self, chat_id: int, user_id1: int, user_id2: int) -> None:
+
+        tasks = [self.create_item(chat_id=chat_id, user_id=user_id)
+                 for user_id in (user_id1, user_id2)]
+
+        await gather(*tasks)
+
+
+    async def get_users_settings(
+            self,
+            chat_id: int,
+            recipient_id: int,
+            sender_id: int
+    ) -> tuple[DirectUserSettings, DirectUserSettings]:
+
+        settings_partial = partial(
+            self.get_item_by,
+            chat_id=chat_id
+        )
+
+        recipient_settings = await settings_partial(
+            user_id=recipient_id
+        )
+
+        sender_settings = await settings_partial(
+            user_id=sender_id
+        )
+
+        return (recipient_settings, sender_settings)
 
 
 class DirectMessageService(BaseService[DirectMessage, BaseRepository]):
@@ -33,17 +65,19 @@ class DirectMessageService(BaseService[DirectMessage, BaseRepository]):
     ) -> list[DirectMessage]:
 
         return await self.repository.get_any_by(
-            sender_id=user.id, recipient_id=recipient.id, **pagination.get()
+            sender_id=user.id, recipient_id=recipient.id, **pagination.dict()
         )
 
 
+
+from functools import partial
 
 class DirectChatService(BaseService[DirectChat, DirectChatRepository]):
 
     def __init__(self, session: AsyncSession):
         super().__init__(DirectChat, session, DirectChatRepository)
         self.message_service = DirectMessageService(session)
-        self.direct_user_settings_service = DirectUserSettingsService(session)
+        self.settings_service = DirectUserSettingsService(session)
         self.ws_manager = WebSocketManager()
 
     async def create_direct(
@@ -55,13 +89,8 @@ class DirectChatService(BaseService[DirectChat, DirectChatRepository]):
             first_user_id=user_1.id, second_user_id=user_2.id
         )
 
-        await self.direct_user_settings_service.create_item(
-            chat_id=chat.id,
-            user_id=user_1.id
-        )
-        await self.direct_user_settings_service.create_item(
-            chat_id=chat.id,
-            user_id=user_2.id,
+        await self.settings_service.init_settings(
+            chat_id=chat.id, user_id1=user_1.id, user_id2=user_2.id
         )
 
         return chat
@@ -73,13 +102,14 @@ class DirectChatService(BaseService[DirectChat, DirectChatRepository]):
             first_user_id=user.id, second_user_id=user.id
         )
 
-        await self.direct_user_settings_service.create_item(
+        await self.settings_service.create_item(
             chat_id=chat.id,
             user_id=user.id,
             chat_name="Избранное"
         )
 
         return chat
+
 
     async def create_message(
             self,
@@ -89,6 +119,7 @@ class DirectChatService(BaseService[DirectChat, DirectChatRepository]):
     ) -> DirectMessage:
         if not recipient.settings.enable_direct:
             raise EntityBadRequestError(
+                "Сообщение",
                 message=f"Пользователь {recipient.username} не принимает сообщения"
             )
 
@@ -97,7 +128,11 @@ class DirectChatService(BaseService[DirectChat, DirectChatRepository]):
         if chat is None:
             chat = await self.create_direct(sender, recipient)
 
-        if chat.banned_user_id is not None:
+        rs, ss = await self.settings_service.get_users_settings(
+            chat.id, recipient.id, sender.id
+        )
+
+        if rs.banned or ss.banned:
             raise EntityLockedError(f"Чат [{sender.username} - {recipient.username}]")
 
         message = await self.message_service.create_item(
@@ -106,12 +141,7 @@ class DirectChatService(BaseService[DirectChat, DirectChatRepository]):
             content=message_info.content
         )
 
-        recipient_settings = await self.direct_user_settings_service.get_item_by(
-            chat_id=chat.id,
-            user_id=recipient.id
-        )
-
-        if (recipient_settings.enable_notifications
+        if (rs.enable_notifications
                 and recipient.settings.direct_notifications):
 
             await self.ws_manager.message_notify(
@@ -131,7 +161,7 @@ class DirectChatService(BaseService[DirectChat, DirectChatRepository]):
             first_user_id=user.id, second_user_id=recipient.id
         )
 
-        user_settings = await self.direct_user_settings_service.get_item_by(
+        user_settings = await self.settings_service.get_item_by(
             chat_id=chat.id,
             user_id=recipient.id
         )
@@ -150,7 +180,7 @@ class DirectChatService(BaseService[DirectChat, DirectChatRepository]):
 
         user_settings = await self.get_direct_settings(current, recipient)
 
-        await self.direct_user_settings_service.update_item(
+        await self.settings_service.update_item(
             user_settings, **settings.dict()
         )
 
@@ -166,10 +196,16 @@ class DirectChatService(BaseService[DirectChat, DirectChatRepository]):
     ):
         chat = await self.get_direct(current_user, to_ban_user)
 
-        if chat.banned_user_id:
+        cu_settings = await self.settings_service.get_item_by(
+            chat_id=chat.id, user_id=current_user.id
+        )
+
+        if cu_settings.banned:
             raise EntityBadRequestError(str(chat), "Чат уже заблокирован")
 
-        await self.update_item(chat, banned_user_id=current_user.id)
+        await self.settings_service.update_item(
+            cu_settings, banned=True
+        )
 
     async def unban_direct(
             self,
@@ -178,15 +214,21 @@ class DirectChatService(BaseService[DirectChat, DirectChatRepository]):
     ):
         chat = await self.get_direct(current_user, to_unban_user)
 
-        if chat.banned_user_id != current_user.id:
-            raise EntityBadRequestError(str(chat), "Невозможно разблокировать чат")
+        cu_settings = await self.settings_service.get_item_by(
+            chat_id=chat.id, user_id=current_user.id
+        )
 
-        await self.update_item(chat, banned_user_id=None)
+        if not cu_settings.banned:
+            raise EntityBadRequestError(str(chat), "Чат уже разблокирован")
+
+        await self.settings_service.update_item(
+            cu_settings, banned=False
+        )
 
 
     async def get_user_chats(self, user: User, pagination: Pagination) -> list[DirectChatShow]:
 
-        result = await self.repository.get_user_chats(user_id=user.id, **pagination.get())
+        result = await self.repository.get_user_chats(user_id=user.id, **pagination.dict())
         return [DirectChatShow(settings=settings, user=user) for settings, user in result]
 
 
@@ -241,6 +283,6 @@ class DirectChatService(BaseService[DirectChat, DirectChatRepository]):
             pagination: Pagination
     ):
         return await self.repository.get_any_by(
-            banned_user_id=user.id, **pagination.get()
+            banned_user_id=user.id, **pagination.dict()
         )
 

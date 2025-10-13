@@ -25,7 +25,8 @@ class ClientDirectEvent(BaseDirectEvent):
 
 class DirectUserSettingsSchema(BaseSchema):
     chat_name: str | None = None
-    enable_notifications: bool | None = None
+    enable_notifications: bool
+    banned: bool
 
 
 class DirectChatShow(BaseModel):

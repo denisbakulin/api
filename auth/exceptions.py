@@ -14,6 +14,8 @@ class TelegramAuthError(AuthError):
 
 class InvalidPasswordError(AuthError):
     """Ошибка некорректного пароля"""
-    
-    def __init__(self):
-        super().__init__("Некорректный пароль")
+
+    def __init__(self, message: str | None = None):
+        if message is None:
+            message = "Некорректный пароль"
+        super().__init__(message)

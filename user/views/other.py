@@ -6,6 +6,9 @@ from post.schemas import PostShow
 from user.deps import userDep, userServiceDep
 from user.schemas import UserShow
 from user.utils import UserSearchParams
+from comment.deps import commentServiceDep
+from topic.schemas import UserCommentsCountOfTopicShow
+
 
 user_router = APIRouter(prefix="/users", tags=["👨 Пользователи"])
 
@@ -59,8 +62,6 @@ async def get_user_posts(
 
 
 
-from comment.deps import commentServiceDep
-from topic.schemas import UserCommentsCountOfTopicShow
 
 
 @user_router.get(

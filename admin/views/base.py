@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends
 
 from admin.deps import get_admin_service
 from admin.service import AdminService
-from auth.deps import ge_role
+from auth.deps import role_validate
 from core.model import BaseORM, ColumnProps
 from core.schemas import BaseSchema
 
@@ -18,7 +18,7 @@ class Admin(APIRouter):
     def __init__(self, *routers, **kwargs):
 
         super().__init__(
-            dependencies=[Depends(ge_role(UserRoleEnum.ADMIN))],
+            dependencies=[Depends(role_validate(UserRoleEnum.ADMIN, ))],
             prefix="/admin",
             **kwargs
         )
@@ -81,8 +81,6 @@ class AdminView(APIRouter):
             raise ValueError()
 
         model = self.model
-
-
 
         self.get(
             "/table-info",

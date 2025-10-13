@@ -5,6 +5,9 @@ from core.repository import BaseRepository
 from core.service import BaseService
 from user.service import UserService
 
+from user.model import User, UserRoleEnum
+from user.schemas import UserCreate
+
 
 class AdminService[T](BaseService[T, BaseRepository]):
     def __init__(self, model: T, session: AsyncSession):
@@ -15,11 +18,6 @@ class AdminService[T](BaseService[T, BaseRepository]):
         return await self.repository.get_items_count()
 
 
-
-from user.model import User, UserRoleEnum
-from user.schemas import UserCreate
-
-
 class AdminUserService(UserService):
 
     async def create_super_admin(self, admin_data: UserCreate) -> User | None:
@@ -28,9 +26,7 @@ class AdminUserService(UserService):
         if admin:
             return admin
 
-        admin = await self.create_user(
-            user_data=admin_data
-        )
+        admin = await self.create_user(user_create=admin_data)
 
         return await self.update_item(admin, role=UserRoleEnum.SUPER_ADMIN)
 
@@ -41,12 +37,9 @@ class AdminUserService(UserService):
         if anon:
             return anon
 
-        anon = await self.create_user(
-            user_data=anon_data
-        )
+        anon = await self.create_user(user_create=anon_data)
 
         return await self.update_item(anon, role=UserRoleEnum.ANONYMOUS)
-
 
     async def edit_user_role(
             self,
