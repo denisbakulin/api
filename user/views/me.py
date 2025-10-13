@@ -4,13 +4,12 @@ from auth.deps import currentUserDep
 from comment.deps import commentServiceDep
 from comment.schemas import CommentShow
 from helpers.search import Pagination
-
 from reaction.deps import reactionServiceDep
 from reaction.schemas import ReactionShow
 from reaction.types import UserReactions
 from user.deps import userServiceDep
-from user.schemas import PasswordChange, PasswordCreate, UserShowMe, UserUpdate, UserSettings
-
+from user.schemas import (PasswordChange, PasswordCreate, UserSettings,
+                          UserShowMe, UserUpdate)
 
 me_router = APIRouter(prefix="/me", tags=["👤 Личный кабинет"])
 
@@ -129,7 +128,7 @@ from post.schemas import PostShow, UserPostCreate
 @me_router.post(
     "/posts",
     summary="Создать пост",
-    response_model=list[PostShow],
+    response_model=PostShow,
     status_code=status.HTTP_201_CREATED,
 
 )

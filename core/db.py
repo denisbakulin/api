@@ -5,6 +5,9 @@ from sqlalchemy.ext.asyncio import (AsyncSession, async_sessionmaker,
 
 from core.model import BaseORM
 from core.settings import AppSettings
+from typing import Annotated
+from fastapi import Depends
+
 
 config = AppSettings.get()
 
@@ -25,8 +28,6 @@ async def init_models():
         await conn.run_sync(BaseORM.metadata.create_all)
 
 
-from typing import Annotated
 
-from fastapi import Depends
 
 getSessionDep = Annotated[AsyncSession, Depends(get_session)]

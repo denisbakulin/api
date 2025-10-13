@@ -6,7 +6,7 @@ from starlette.responses import JSONResponse
 
 from auth.exceptions import AuthError
 from core.exceptions import (EntityAlreadyExists, EntityBadRequestError,
-                             EntityNotFoundError, EntityLockedError)
+                             EntityLockedError, EntityNotFoundError)
 
 
 class AppExceptionMiddleware(BaseHTTPMiddleware):

@@ -1,7 +1,17 @@
-from sqlalchemy import Boolean, ForeignKey
+from enum import IntEnum
+
+from sqlalchemy import ForeignKey, Index
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from core.model import BaseORM, IdMixin, TimeMixin
+
+
+class UserRoleEnum(IntEnum):
+    SUPER_ADMIN = 5
+    ADMIN = 4
+    MODERATOR = 3
+    USER = 2
+    ANONYMOUS = 1
 
 
 class Profile(BaseORM, IdMixin):
@@ -37,7 +47,7 @@ class Settings(BaseORM, IdMixin):
 
 
 
-from uuid import uuid4
+
 class User(BaseORM, IdMixin, TimeMixin):
     __tablename__ = "users"
 
@@ -48,10 +58,21 @@ class User(BaseORM, IdMixin, TimeMixin):
         nullable=False, unique=True
     )
     password: Mapped[str] = mapped_column(nullable=True)
-    email: Mapped[str] = mapped_column(nullable=True, unique=True)
+    email: Mapped[str | None] = mapped_column(nullable=True)
 
-    is_active: Mapped[bool] = mapped_column(Boolean, default=True)
-    is_admin: Mapped[bool] = mapped_column(Boolean, default=False)
+
+    is_active: Mapped[bool] = mapped_column(default=True)
+    role: Mapped[UserRoleEnum] = mapped_column(default=UserRoleEnum.USER)
+
+    __table_args__ = (
+        Index(
+            "ix_users_unique_email",
+            "email",
+            unique=True,
+            postgresql_where=(email.isnot(None))
+        ),
+    )
+
 
     @property
     def password_login(self):

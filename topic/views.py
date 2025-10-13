@@ -1,13 +1,14 @@
 from fastapi import APIRouter, Depends, status
-from auth.deps import currentUserDep, adminDep, get_admin
 
-
-from topic.deps import topicOfferServiceDep, topicDep, topicServiceDep, topicOfferDep
-from topic.schemas import BaseTopic, TopicOfferShow, AddTopicByOffer, CreateTopic
-from fastapi import status
-from post.deps import postServiceDep
-from post.schemas import PostShow, PostCreate
+from auth.deps import currentUserDep, ge_role, get_role
 from helpers.search import Pagination
+from post.deps import postServiceDep
+from post.schemas import PostCreate, PostShow
+from topic.deps import (topicDep, topicOfferDep, topicOfferServiceDep,
+                        topicServiceDep)
+from topic.schemas import (AddTopicByOffer, CreateTopicOffer, TopicOfferShow,
+                           TopicShow, CreateTopic)
+from user.model import UserRoleEnum
 
 topic_router = APIRouter(prefix="/topics", tags=["📚 Темы"])
 
@@ -15,7 +16,7 @@ topic_router = APIRouter(prefix="/topics", tags=["📚 Темы"])
 @topic_router.get(
     "",
     summary="Получить темы",
-    response_model=list[BaseTopic]
+    response_model=list[TopicShow]
 )
 async def get_topics(
         topic_service: topicServiceDep,
@@ -28,15 +29,15 @@ async def get_topics(
 @topic_router.post(
     "",
     summary="Создать тему",
-    response_model=BaseTopic,
-    dependencies=[Depends(get_admin)],
+    response_model=TopicShow,
     status_code=status.HTTP_201_CREATED
 )
 async def create_topic(
         topic_service: topicServiceDep,
         topic: CreateTopic,
+        user = Depends(ge_role(UserRoleEnum.MODERATOR))
 ):
-    return await topic_service.create_topic(topic)
+    return await topic_service.create_topic(topic, user)
 
 
 
@@ -49,7 +50,7 @@ async def create_topic(
 async def offer_theme(
         user: currentUserDep,
         offer_service: topicOfferServiceDep,
-        topic: BaseTopic
+        topic: CreateTopicOffer
 ):
     return await offer_service.create_offer_topic(user, topic)
 
@@ -69,7 +70,7 @@ async def offer_theme(
 @topic_router.get(
     "/{slug}",
     summary="Получить тему",
-    response_model=BaseTopic
+    response_model=TopicShow
 )
 async def get_topic(
         topic: topicDep
@@ -111,17 +112,17 @@ async def get_topic_posts(
 @topic_router.post(
     "/offer/{offer_id}/process",
     summary="Принять/отклонить тему",
-    response_model=BaseTopic,
-    dependencies=[Depends(get_admin)],
+    response_model=TopicOfferShow | TopicShow,
     status_code=status.HTTP_201_CREATED
 )
 async def process_topic(
         topic_offer: topicOfferDep,
         topic_service: topicServiceDep,
         process: AddTopicByOffer,
+        user = Depends(ge_role(UserRoleEnum.MODERATOR))
 ):
     return await topic_service.create_topic_from_offer(
-        process=process, topic=topic_offer
+        process=process, topic=topic_offer, process_user=user
     )
 
 

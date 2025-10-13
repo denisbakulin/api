@@ -1,25 +1,17 @@
-from typing import Optional
+from pydantic import BaseModel, EmailStr, Field, field_validator
 
-from pydantic import EmailStr, Field
-
-from core.schemas import BaseSchema
-from user.schemas import UserShowMe
+from user.model import UserRoleEnum
+from user.schemas import UserCreate, UserShow, UserShowMe
 
 
-class UserFields(BaseSchema):
-    is_active: bool = Field(default=True)
-    is_admin: bool = Field(default=False)
+class AdminUserUpdate(UserShow):
+
+    username: str | None = None
+    email: EmailStr | None = None
 
 
-class AdminUserShow(UserShowMe, UserFields):
-    ...
-
-
-class AdminUserUpdate(UserFields):
-    username: Optional[str] = None
-    email: Optional[EmailStr] = None
-    is_admin: Optional[bool] = None
-    is_active: Optional[bool] = None
+class UserRole(BaseModel):
+    role: int
 
 
 

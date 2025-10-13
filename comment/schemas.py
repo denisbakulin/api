@@ -1,18 +1,23 @@
 from typing import Optional
 
-from core.schemas import BaseSchema, IdMixinSchema, TimeMixinSchema
 from pydantic import Field
+
+from core.schemas import BaseSchema, IdMixinSchema, TimeMixinSchema
+from post.schemas import PostSlug
+from user.schemas import UserUsername
+
 
 class CommentBase(BaseSchema):
     content: str
 
+
 class CommentCreate(CommentBase):
-    parent_id: Optional[int] = Field(default=None)
+    parent_id: int | None = None
 
 
 class CommentShow(CommentCreate, IdMixinSchema, TimeMixinSchema):
-    user_id: int
-    post_id: int
+    author: UserUsername
+    post: PostSlug
 
 
 class CommentUpdate(CommentBase):

@@ -1,5 +1,7 @@
 from pydantic import BaseModel
-from core.schemas import TimeMixinSchema, IdMixinSchema, BaseSchema
+
+from core.schemas import BaseSchema, IdMixinSchema, TimeMixinSchema
+
 
 class MessageCreate(BaseModel):
     content: str
@@ -10,8 +12,6 @@ class DirectMessageShow(MessageCreate, TimeMixinSchema, IdMixinSchema):
     sender_id: int
 
 from user.schemas import UserShow
-
-
 
 
 class BaseDirectEvent(BaseModel):

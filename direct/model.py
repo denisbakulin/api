@@ -1,7 +1,7 @@
 from sqlalchemy import ForeignKey, Index, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from core.model import BaseORM, TimeMixin, IdMixin
+from core.model import BaseORM, IdMixin, TimeMixin
 
 
 class DirectMessage(BaseORM, TimeMixin, IdMixin):

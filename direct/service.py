@@ -1,17 +1,20 @@
+from asyncio import gather
+
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from core.service import BaseService
-from user.model import User
-from direct.model import DirectMessage, DirectChat, DirectUserSettings
-
-from direct.repository import DirectChatRepository
-from direct.schemas import MessageCreate, DirectChatShow, DirectUserSettingsSchema
-from helpers.search import Pagination
+from core.exceptions import (EntityBadRequestError, EntityLockedError,
+                             EntityNotFoundError)
 from core.repository import BaseRepository
+from core.service import BaseService
 from direct.manager import WebSocketManager
-from core.exceptions import EntityNotFoundError, EntityLockedError, EntityBadRequestError
+from direct.model import DirectChat, DirectMessage, DirectUserSettings
+from direct.repository import DirectChatRepository
+from direct.schemas import (DirectChatShow, DirectUserSettingsSchema,
+                            MessageCreate)
+from helpers.search import Pagination
+from user.model import User
 
-from asyncio import gather
+
 class DirectUserSettingsService(BaseService[DirectUserSettings, BaseRepository]):
 
     def __init__(self, session: AsyncSession):

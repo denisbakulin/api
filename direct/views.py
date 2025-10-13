@@ -1,13 +1,12 @@
 from fastapi import APIRouter, Depends
-from user.deps import userDep
-from direct.schemas import  MessageCreate, DirectMessageShow, DirectChatShow, DirectUserSettingsSchema
-from auth.deps import currentUserDep
-from auth.deps import currentUserDep
-
-from direct.deps import directChatServiceDep
-from helpers.search import Pagination
-
 from fastapi_cache.decorator import cache
+
+from auth.deps import currentUserDep
+from direct.deps import directChatServiceDep
+from direct.schemas import (DirectChatShow, DirectMessageShow,
+                            DirectUserSettingsSchema, MessageCreate)
+from helpers.search import Pagination
+from user.deps import userDep
 
 direct_router = APIRouter(prefix="/direct", tags=["💭 Личные сообщения"])
 

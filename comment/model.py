@@ -15,8 +15,9 @@ class Comment(BaseORM, TimeMixin):
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
     parent_id: Mapped[int] = mapped_column(ForeignKey("comments.id", ondelete="CASCADE"), nullable=True)
 
-    post: Mapped["Post"] = relationship("Post")
-    author: Mapped["User"] = relationship("User")
+    post: Mapped["Post"] = relationship("Post", lazy="joined")
+    author: Mapped["User"] = relationship("User", lazy="joined")
+
 
     parent: Mapped["Comment"] = relationship(
         "Comment",

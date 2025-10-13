@@ -1,14 +1,12 @@
+from typing import Optional
+
+from sqlalchemy import and_, case, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, or_, and_, case
 from sqlalchemy.orm import aliased
 
 from core.repository import BaseRepository
-from direct.model import DirectChat
-
-from typing import Optional
-
+from direct.model import DirectChat, DirectUserSettings
 from user.model import User
-from direct.model import DirectUserSettings
 
 
 class DirectChatRepository(BaseRepository):

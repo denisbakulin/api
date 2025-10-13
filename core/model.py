@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional, Type
 
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, Field
 from sqlalchemy import inspect
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 

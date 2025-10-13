@@ -1,4 +1,4 @@
-from typing import Type, TypeVar, Any
+from typing import Any, TypeVar
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -6,7 +6,6 @@ from core.exceptions import EntityAlreadyExists, EntityNotFoundError
 from core.model import BaseORM
 from core.repository import BaseRepository
 from helpers.search import Pagination
-
 
 T = TypeVar("T", bound=BaseORM)
 R = TypeVar("R", bound=BaseRepository)
@@ -90,6 +89,7 @@ class BaseService[T, R]:
                 entity=self.model.__name__,
                 **fields
             )
+
 
 
     async def delete_item_by_id(self, item_id):

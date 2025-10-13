@@ -1,5 +1,6 @@
-from pydantic import BaseModel
 from typing import Optional
+
+from pydantic import BaseModel
 
 
 class AccessTokenResponse(BaseModel):
@@ -17,8 +18,8 @@ class TokenInfo(BaseModel):
 
 
 class AuthCreds(BaseModel):
-    username: str
-    password: str
+    username: str = "admin"
+    password: str = "admin"
 
 
 class TelegramUser(BaseModel):

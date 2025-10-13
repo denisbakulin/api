@@ -1,13 +1,11 @@
-from fastapi import (APIRouter, Cookie, Depends,
-                     HTTPException, Response)
+from fastapi import APIRouter, Cookie, Depends, HTTPException, Response
 
 from auth.deps import get_auth_service
 from auth.exceptions import InvalidTokenError
-from auth.schemas import (AccessTokenResponse, AuthCreds, TelegramAuth)
+from auth.schemas import AccessTokenResponse, AuthCreds, TelegramAuth
 from auth.service import AuthService
 from auth.utils import (TokenCreator, TokenTypes, decode_token,
                         set_refresh_token_cookie)
-
 
 auth_router = APIRouter(prefix="/auth", tags=["🔐 Авторизация"])
 

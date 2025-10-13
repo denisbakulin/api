@@ -31,7 +31,6 @@ async def search_users(
     response_model=UserShow,
 
 )
-
 async def get_user(
         user: userDep
 ):
@@ -60,8 +59,8 @@ async def get_user_posts(
 
 
 
-from topic.schemas import UserCommentsCountOfTopicShow
 from comment.deps import commentServiceDep
+from topic.schemas import UserCommentsCountOfTopicShow
 
 
 @user_router.get(

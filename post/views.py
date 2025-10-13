@@ -1,3 +1,5 @@
+from typing import Literal
+
 from fastapi import APIRouter, Depends, status
 from fastapi_cache.decorator import cache
 
@@ -6,13 +8,14 @@ from comment.deps import commentServiceDep
 from comment.schemas import CommentCreate, CommentShow
 from helpers.search import Pagination
 from post.deps import postDep, postServiceDep
-from post.schemas import PostCreate, PostShow, PostUpdate, FullPostShow, TopPostShow
+from post.schemas import (FullPostShow, PostCreate, PostShow, PostUpdate,
+                          TopPostShow)
 from post.utils import PostSearchParams
 from reaction.deps import reactionServiceDep
 from reaction.schemas import ReactionShow
 from reaction.types import PostReactionsGetParams, PostReactionsSetParams
+from user.deps import anonDep
 
-from typing import Literal
 post_router = APIRouter(prefix="/posts", tags=["📝 Посты"])
 
 
@@ -97,6 +100,27 @@ async def create_comment(
         user=user,
         post=post
     )
+
+@post_router.post(
+    "/{slug}/as-anon/comments",
+    summary="Создать комментарий анонимно",
+    response_model=CommentShow,
+    status_code=status.HTTP_201_CREATED
+)
+async def create_comment_as_anon(
+        post: postDep,
+        anon: anonDep,
+        comment_info: CommentCreate,
+        comment_service: commentServiceDep,
+
+):
+    return await comment_service.create_comment(
+        comment_info,
+        user=anon,
+        post=post
+    )
+
+
 
 
 @post_router.get(

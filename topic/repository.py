@@ -1,7 +1,7 @@
-from topic.model import Topic, TopicOffer
-from core.repository import BaseRepository
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from core.repository import BaseRepository
+from topic.model import Topic, TopicOffer
 
 
 class TopicRepository(BaseRepository[Topic]):

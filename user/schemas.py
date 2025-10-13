@@ -1,8 +1,12 @@
 from typing import Optional
 
-from pydantic import EmailStr, Field, field_validator
+from pydantic import EmailStr, Field, field_serializer, field_validator
 
-from core.schemas import BaseSchema,  IdMixinSchema, TimeMixinSchema
+from core.schemas import BaseSchema, IdMixinSchema, TimeMixinSchema
+
+
+class UserUsername(BaseSchema):
+    username: str
 
 
 class UserCreate(BaseSchema):
@@ -35,14 +39,27 @@ class PostUserShow(BaseSchema):
 
 class UserShow(BaseSchema, IdMixinSchema, TimeMixinSchema):
     username: str
-    profile: UserProfile | None
+    email: EmailStr | None
+    profile: UserProfile
     is_active: bool
-    email: str
+
+
+
+from user.model import UserRoleEnum
 
 
 class UserShowMe(UserShow):
-    is_admin: bool
     password_login: bool
+    role: UserRoleEnum
+    tg_id: int | None
+
+
+    @field_serializer("role")
+    def role_serialize(self, role: UserRoleEnum):
+        return role._name_
+
+
+
 
 
 

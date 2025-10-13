@@ -33,7 +33,7 @@ import pytest_asyncio
 from httpx import ASGITransport, AsyncClient
 
 from core.db import get_engine
-from core.settings import FirstAdminSettings
+from core.settings import SuperAdminSettings
 from core.setup import create_app
 
 pytest_plugins = ['pytest_asyncio']
@@ -70,7 +70,7 @@ async def client(db):
 
 @pytest_asyncio.fixture(scope="module", autouse=True)
 async def admin_client(client):
-    admin_info = FirstAdminSettings()
+    admin_info = SuperAdminSettings()
 
     response = await client.post(
         "/auth/login",

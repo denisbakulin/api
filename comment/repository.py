@@ -1,12 +1,13 @@
 from typing import Optional
 
+from sqlalchemy import and_, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import func, and_
+
 from comment.model import Comment
 from core.repository import BaseRepository
-from sqlalchemy import select
-from topic.model import Topic
 from post.model import Post
+from topic.model import Topic
+
 
 class CommentRepository(BaseRepository[Comment]):
 

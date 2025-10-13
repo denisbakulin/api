@@ -1,14 +1,16 @@
 from fastapi import APIRouter, Depends
-from user.deps import userDep
+
 from auth.deps import currentUserDep
-from subs.deps import subscribeServiceDep
 from helpers.search import Pagination
 from post.schemas import PostShow
+from subs.deps import subscribeServiceDep
+from user.deps import userDep
 
 subs_router = APIRouter(prefix="/subs", tags=["🔔 Подписки"])
 
-from subs.schemas import SubscribeShow
 from post.deps import postServiceDep
+from subs.schemas import SubscribeShow
+
 
 @subs_router.get(
     "",

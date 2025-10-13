@@ -5,15 +5,15 @@ from comment.repository import CommentRepository
 from comment.schemas import CommentCreate, CommentUpdate
 from core.exceptions import EntityBadRequestError
 from core.service import BaseService
+from direct.manager import WebSocketManager
 from helpers.search import Pagination
 from post.model import Post
 from post.service import PostService
+from topic.schemas import UserCommentsCountOfTopicShow
 from user.model import User
 from user.service import UserService
 
-from topic.schemas import UserCommentsCountOfTopicShow
 
-from direct.manager import WebSocketManager
 class CommentService(BaseService[Comment, CommentRepository]):
 
     def __init__(self, session: AsyncSession):
@@ -92,7 +92,6 @@ class CommentService(BaseService[Comment, CommentRepository]):
         top_themes = await self.repository.get_user_comment_count_by_topic(
             user.id
         )
-        print(top_themes, 100000000000000000)
         return [
             UserCommentsCountOfTopicShow(topic=topic, count=count)
             for topic, count in top_themes

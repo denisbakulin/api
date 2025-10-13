@@ -14,3 +14,23 @@ def get_admin_service(
     return wrapper
 
 
+from typing import Annotated
+
+from fastapi import Depends
+
+from admin.service import AdminUserService
+
+
+async def get_admin_user_service(
+        session: getSessionDep
+) -> AdminUserService:
+    return AdminUserService(session=session)
+
+adminUserServiceDep = Annotated[AdminUserService, Depends(get_admin_user_service)]
+
+
+
+
+
+
+

@@ -17,10 +17,10 @@ def generate_slug(title: str, index: int | None = None) -> str:
     result = sub(
         r"[^a-z0-9]+",
         "-",
-        unidecode(f"{title} {index if index else ''}").lower().strip("-")
+        unidecode(f"{title} {index if index else ''}").lower()
     )
 
-    return result
+    return result.strip("-")
 
 
 PostSearchParams = search_param_fabric(Literal["slug", "id", "title"])

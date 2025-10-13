@@ -18,7 +18,7 @@ class Post(BaseORM, IdMixin, TimeMixin):
     topic_id: Mapped[int | None] = mapped_column(ForeignKey("topics.id"))
     author_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
 
-    author: Mapped["User"] = relationship("User", lazy="joined")
+    author: Mapped["User"] = relationship("User", lazy="selectin")
     topic: Mapped["User"] = relationship("Topic")
 
     @property

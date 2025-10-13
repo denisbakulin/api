@@ -25,33 +25,41 @@ class AppSettings(BaseConfig):
     db_uri: str
 
 
-class AuthSettings(BaseConfig):
+class JWTAuthSettings(BaseConfig):
     secret_key: str
     algorithm: str
     access_token_expire_minutes: int
     refresh_token_expire_days: int
-    verify_token_expire_hours: int
 
     class Config(BaseConfig.Config):
         env_prefix = "JWT_"
 
-class MailSettings(BaseConfig):
-    username: EmailStr
-    password: str
-    port: int
-    server: str
-    tls: bool = True
-    ssl: bool = False
+
+class TGAuthSettings(BaseConfig):
+    token: str
 
     class Config(BaseConfig.Config):
-        env_prefix = "MAIL_"
+        env_prefix = "TG_"
 
 
-class FirstAdminSettings(BaseConfig):
+
+class SuperAdminSettings(BaseConfig):
     username: str
     password: str
     email: EmailStr
 
     class Config(BaseConfig.Config):
-        env_prefix = "FIRST_ADMIN_"
+        env_prefix = "SUPER_ADMIN_"
+
+
+class AnonUserSettings(BaseConfig):
+    username: str
+    password: str
+
+    class Config(BaseConfig.Config):
+        env_prefix = "ANON_"
+
+
+
+
 

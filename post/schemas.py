@@ -1,7 +1,8 @@
-from pydantic import Field, BaseModel
+from pydantic import BaseModel, Field
 
 from core.schemas import BaseSchema, IdMixinSchema, TimeMixinSchema
 from user.schemas import PostUserShow
+
 
 class PostAllows(BaseSchema):
     allow_comments: bool = Field(default=True)
@@ -13,12 +14,15 @@ class PostBase(BaseSchema):
     title: str = Field(min_length=1, max_length=100)
     content: str = Field(max_length=5000)
 
+from user.schemas import UserUsername
 
 
 class PostShow(PostBase, IdMixinSchema, TimeMixinSchema):
-    author: PostUserShow
+    author: UserUsername
     slug: str
 
+class PostSlug(BaseSchema):
+    slug: str
 
 class TopPostShow(BaseSchema):
     post: PostShow

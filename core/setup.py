@@ -36,32 +36,26 @@ def set_middlewares(app: FastAPI):
 
 
 def include_routers(app: FastAPI):
-    from admin.views import Admin, PostAdminView, UserAdminView, CommentAdminView
+    from admin.views import admin_router
     from auth.views import auth_router
     from comment.views import comm_router
+    from direct.views import direct_router
+    from direct.ws import ws
     from integrations.crypto.views import crypto_router
     from integrations.weather.views import weather_router
     from post.views import post_router
-    from user.views.me import me_router
-    from user.views.other import user_router
-    from direct.views import direct_router
-    from direct.ws import ws
     from subs.views import subs_router
     from topic.views import topic_router
-
-    admin_router = Admin(
-        UserAdminView(table_name="Пользователи"),
-        PostAdminView(table_name="Посты"),
-        CommentAdminView(table_name="Комментарии")
-    )
-
+    from user.views.me import me_router
+    from user.views.other import user_router
 
     routers: list[APIRouter] = [
-        user_router, me_router, topic_router,
-        auth_router, post_router,
-        comm_router, admin_router,
+        auth_router, user_router,
+        me_router, topic_router,
+        post_router, comm_router,
         crypto_router, weather_router,
-        direct_router, ws, subs_router
+        direct_router, ws, subs_router,
+        admin_router
     ]
 
 
@@ -70,31 +64,36 @@ def include_routers(app: FastAPI):
 
 
 async def init_db(app: FastAPI):
-
     from core.db import init_models, session_factory
-    from user.schemas import UserCreate
-    from user.service import UserService
-
-    from direct.model import DirectChat, DirectMessage, DirectUserSettings
-    from user.model import User, Profile, Settings
-    from comment.model import Comment
-    from post.model import Post
-    from subs.model import Subscribe
-    from reaction.model import Reaction
-    from topic.model import Topic, TopicOffer
 
     await init_models()
 
-    from core.settings import FirstAdminSettings
+    from user.schemas import UserCreate
 
-    admin_data = FirstAdminSettings.get().dict()
+    from admin.service import AdminUserService
+    from core.settings import AnonUserSettings, SuperAdminSettings
+    from topic.service import TopicService
+
+    admin_data = SuperAdminSettings.get()
+    anon_data = AnonUserSettings.get()
 
     async with session_factory() as session:
-        user_service = UserService(session=session)
+        user_service = AdminUserService(session=session)
+        topic_service = TopicService(session=session)
 
-        await user_service.create_first_admin(
-            UserCreate(**admin_data)
+        await user_service.create_super_admin(
+            UserCreate(**admin_data.dict())
         )
+
+        anon = await user_service.create_anon(
+            UserCreate(**anon_data.dict())
+        )
+
+        await topic_service.create_news_topic(
+            anon
+        )
+
+
 
 
 

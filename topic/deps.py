@@ -4,7 +4,7 @@ from fastapi import Depends
 
 from core.db import getSessionDep
 from topic.model import Topic, TopicOffer
-from topic.service import TopicService, TopicOfferService
+from topic.service import TopicOfferService, TopicService
 
 
 def get_topic_service(

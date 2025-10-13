@@ -1,14 +1,14 @@
-from subs.repository import SubscribeRepository
 from sqlalchemy.ext.asyncio import AsyncSession
-from core.service import BaseService
-
-from subs.model import Subscribe
-
-from direct.ws import WebSocketManager
-from user.model import User
-from helpers.search import Pagination
 
 from core.exceptions import EntityBadRequestError
+from core.service import BaseService
+from direct.ws import WebSocketManager
+from helpers.search import Pagination
+from subs.model import Subscribe
+from subs.repository import SubscribeRepository
+from user.model import User
+
+
 class SubscribeService(BaseService[Subscribe, SubscribeRepository]):
 
     def __init__(self, session: AsyncSession):

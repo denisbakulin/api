@@ -1,7 +1,5 @@
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func
-
-
 
 from core.repository import BaseRepository
 from post.model import Post

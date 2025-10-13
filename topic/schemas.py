@@ -1,31 +1,33 @@
-from core.schemas import BaseSchema
-from user.schemas import UserShow
+from core.schemas import BaseSchema, IdMixinSchema
+from topic.model import TopicOfferStatus
+from user.schemas import UserUsername
 
-class BaseTopic(BaseSchema):
+
+class CreateTopicOffer(BaseSchema):
     title: str
-    slug: str | None = None
-    description: str | None = None
+    description: str
 
 
-class CreateTopic(BaseTopic):
+class CreateTopic(CreateTopicOffer):
     slug: str
+
+
+class TopicOfferShow(CreateTopicOffer, IdMixinSchema):
+    status: TopicOfferStatus
+    author: UserUsername
+    process_user: UserUsername | None
+
+
+class TopicShow(CreateTopic):
+    approved_user: UserUsername
+    suggested_by_user: UserUsername | None
+
+
+class AddTopicByOffer(CreateTopic):
+    status: TopicOfferStatus
 
 
 class UserCommentsCountOfTopicShow(BaseSchema):
     count: int
-    topic: BaseTopic
-
-class UserUsername(BaseSchema):
-    username: str
-
-
-class TopicOfferShow(BaseTopic):
-    status: str
-    author: UserUsername
-
-
-
-from typing import Literal
-class AddTopicByOffer(BaseTopic):
-    status: Literal["approve", "reject"]
+    topic: TopicShow
 

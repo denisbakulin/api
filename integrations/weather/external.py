@@ -1,7 +1,6 @@
 from httpx import AsyncClient
 from pydantic import BaseModel, ValidationError
 
-
 from integrations.exceptions import ExternalApiRequestError
 from integrations.external_api import ExternalAPI, safe_request
 
@@ -46,6 +45,7 @@ class OpenWeatherAPI(ExternalAPI):
 
 
 from functools import lru_cache
+
 
 @lru_cache
 def get_openweather_client() -> OpenWeatherAPI:

@@ -3,14 +3,13 @@ from typing import Optional, Type
 from fastapi import APIRouter, Depends
 
 from admin.deps import get_admin_service
-from admin.schemas import AdminUserUpdate, UserFields
 from admin.service import AdminService
-from auth.deps import get_admin
+from auth.deps import ge_role
 from core.model import BaseORM, ColumnProps
 from core.schemas import BaseSchema
-from post.model import Post
-from user.model import User
-from user.schemas import UserCreate
+
+from user.model import  UserRoleEnum
+
 
 
 class Admin(APIRouter):
@@ -19,7 +18,7 @@ class Admin(APIRouter):
     def __init__(self, *routers, **kwargs):
 
         super().__init__(
-            dependencies=[Depends(get_admin)],
+            dependencies=[Depends(ge_role(UserRoleEnum.ADMIN))],
             prefix="/admin",
             **kwargs
         )
@@ -137,87 +136,3 @@ class AdminView(APIRouter):
 
         @self.get("path"): ...
         """
-
-
-from user.schemas import UserShowMe
-from user.deps import userServiceDep, userDep
-
-
-class UserAdminView(AdminView, model=User):
-    show = UserShowMe
-
-    def init_custom_views(self):
-
-        @self.post(
-            "",
-            summary="Создать пользователя",
-            response_model=self.show
-        )
-        async def create_user(
-                user_create: UserCreate,
-                user_service: userServiceDep,
-                extra: UserFields = Depends(),
-        ):
-            return await user_service.create_user(user_create, **extra.dict())
-
-        @self.patch(
-            "/{username}",
-            summary="Изменить пользователя",
-            response_model=self.show
-        )
-        async def update_user(
-                user: userDep,
-                user_data: AdminUserUpdate,
-                user_service: userServiceDep
-        ):
-            return await user_service.update_user(user, user_data)
-
-
-
-from post.schemas import PostShow
-from post.deps import postDep, postServiceDep
-from post.schemas import PostUpdate, PostAllows
-
-
-class PostAdminView(AdminView, model=Post, delete_=True):
-    show = PostShow
-
-    def init_custom_views(self):
-
-        @self.patch(
-            "/{slug}",
-            summary="Изменить пост",
-            response_model=self.show
-        )
-        async def edit_post(
-                post: postDep,
-                updates: PostUpdate,
-                post_service: postServiceDep,
-                allows: PostAllows = Depends()
-
-        ):
-            return await post_service.update_item(
-                post, **updates.dict(), **allows.dict()
-            )
-
-
-
-
-
-from comment.schemas import CommentShow
-from comment.model import Comment
-
-
-class CommentAdminView(AdminView, model=Comment, delete_=True):
-    show = CommentShow
-
-
-
-
-
-
-
-
-
-
-
