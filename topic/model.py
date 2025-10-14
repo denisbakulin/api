@@ -32,9 +32,6 @@ class Topic(BaseORM, IdMixin, TimeMixin):
 
 
 
-
-
-
 class TopicOffer(BaseORM, IdMixin, TimeMixin):
     __tablename__ = "topic_offers"
 

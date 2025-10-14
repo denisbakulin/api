@@ -1,6 +1,6 @@
 from typing import Optional
 
-from sqlalchemy import and_, func, select
+from sqlalchemy import  func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from comment.model import Comment
@@ -19,21 +19,6 @@ class CommentRepository(BaseRepository[Comment]):
             **comment_data,
     ) -> Comment:
         return self.create(**comment_data)
-
-    async def get_comments(
-            self,
-            offset: Optional[int],
-            limit: Optional[int],
-            **filters,
-    ) -> list[Comment] | None:
-        return await self.get_any_by(offset=offset, limit=limit, **filters)
-
-    async def get_comment(
-            self,
-            **filters
-    ) -> Optional[Comment]:
-        return await self.get_one_by(**filters)
-
 
     async def get_user_comment_count_by_topic(
             self,

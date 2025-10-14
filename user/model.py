@@ -73,7 +73,6 @@ class User(BaseORM, IdMixin, TimeMixin):
         ),
     )
 
-
     @property
     def password_login(self):
         return bool(self.password)

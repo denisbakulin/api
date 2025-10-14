@@ -12,7 +12,8 @@ class Subscribe(BaseORM, TimeMixin):
 
     creator: Mapped["User"] = relationship(
         "User",
-        foreign_keys=[creator_id]
+        foreign_keys=[creator_id],
+        lazy="selectin"
     )
 
     subscriber: Mapped["User"] = relationship(

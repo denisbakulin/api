@@ -23,11 +23,20 @@ class TopicShow(CreateTopic):
     suggested_by_user: UserUsername
 
 
+class TopicFullShow(BaseSchema):
+    topic: TopicShow
+    post_count: int
+    comment_count: int
+
+
 class AddTopicByOffer(CreateTopic):
     status: TopicOfferStatus
+
 
 
 class UserCommentsCountOfTopicShow(BaseSchema):
     count: int
     topic: TopicShow
 
+class TopicSlug(BaseSchema):
+    slug: str

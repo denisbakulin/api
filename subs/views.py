@@ -14,8 +14,6 @@ from subs.schemas import SubscribeShow
 subs_router = APIRouter(prefix="/subs", tags=["🔔 Подписки"])
 
 
-
-
 @subs_router.get(
     "",
     summary="Получить подписки пользователя",

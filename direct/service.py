@@ -1,7 +1,4 @@
-from asyncio import gather
-
 from sqlalchemy.ext.asyncio import AsyncSession
-
 from core.exceptions import (EntityBadRequestError, EntityLockedError,
                              EntityNotFoundError)
 from core.repository import BaseRepository

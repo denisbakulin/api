@@ -5,6 +5,7 @@ from core.repository import BaseRepository
 from post.model import Post
 from reaction.model import Reaction
 
+from topic.model import Topic
 
 class ReactionRepository(BaseRepository[Reaction]):
 
@@ -18,6 +19,23 @@ class ReactionRepository(BaseRepository[Reaction]):
                 func.count().label("count")
             )
             .where(Reaction.post_id == post.id)
+            .group_by(Reaction.reaction)
+        )
+
+        result = await self.session.execute(stmt)
+
+        return {reaction: count for reaction, count in result.all()}
+
+    async def get_topic_reaction_count(self, topic: Topic):
+        stmt = (
+            select(
+                Reaction.reaction,
+                func.count().label("count")
+            )
+            .join(
+                Post, Reaction.topic_id == topic.id
+            )
+            .where(Reaction.post_id == topic.id)
             .group_by(Reaction.reaction)
         )
 

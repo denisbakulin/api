@@ -7,8 +7,12 @@ from post.schemas import PostCreate, PostShow
 from topic.deps import (topicDep, topicOfferDep, topicOfferServiceDep,
                         topicServiceDep)
 from topic.schemas import (AddTopicByOffer, CreateTopicOffer, TopicOfferShow,
-                           TopicShow, CreateTopic)
+                           TopicShow, CreateTopic, TopicFullShow)
 from user.model import UserRoleEnum, User
+from reaction.schemas import TopicReactionShow
+from reaction.deps import reactionServiceDep
+from reaction.types import ReactionsSetParams
+
 
 topic_router = APIRouter(prefix="/topics", tags=["📚 Темы"])
 
@@ -16,13 +20,13 @@ topic_router = APIRouter(prefix="/topics", tags=["📚 Темы"])
 @topic_router.get(
     "",
     summary="Получить темы",
-    response_model=list[TopicShow]
+    response_model=list[TopicFullShow]
 )
 async def get_topics(
         topic_service: topicServiceDep,
         pagination: Pagination = Depends()
 ):
-    return await topic_service.get_items_by(pagination)
+    return await topic_service.get_full_topics(pagination)
 
 
 
@@ -37,10 +41,10 @@ async def create_topic(
         topic_service: topicServiceDep,
         user: User = Depends(role_validate(UserRoleEnum.MODERATOR, ))
 ):
+
     return await topic_service.create_topic(
         topic=topic, approved_user=user, suggested_user=user
     )
-
 
 
 @topic_router.post(
@@ -75,12 +79,47 @@ async def offer_theme(
 @topic_router.get(
     "/{slug}",
     summary="Получить тему",
-    response_model=TopicShow
+    response_model=TopicFullShow
 )
 async def get_topic(
-        topic: topicDep
+        topic: topicDep,
+        topic_service: topicServiceDep
 ):
-    return topic
+    return await topic_service.get_full_topic(topic)
+
+
+@topic_router.post(
+    "/{slug}/reactions",
+    summary="Оставить реакцию под темой",
+    response_model=TopicReactionShow,
+    status_code=status.HTTP_201_CREATED
+)
+async def get_topic_reactions(
+        topic: topicDep,
+        user: currentUserDep,
+        reaction_type: ReactionsSetParams,
+        reaction_service: reactionServiceDep
+):
+    return await reaction_service.add_reaction(user=user, topic=topic, reaction_type=reaction_type)
+
+
+
+@topic_router.get(
+    "/{slug}/reactions",
+    summary="Получить реакции темы",
+    response_model=list[TopicReactionShow],
+)
+async def get_topic_reactions(
+        topic: topicDep,
+        reaction_type: ReactionsSetParams,
+        reaction_service: reactionServiceDep,
+        pagination: Pagination = Depends()
+):
+    return await reaction_service.get_topic_reactions(
+        topic=topic, reaction_type=reaction_type, pagination=pagination
+    )
+
+
 
 @topic_router.post(
     "/{slug}/posts",
@@ -115,9 +154,6 @@ async def get_topic_posts(
     )
 
 
-
-
-
 @topic_router.post(
     "/offer/{offer_id}/process",
     summary="Принять/отклонить тему",
@@ -128,7 +164,7 @@ async def process_topic(
         topic_offer: topicOfferDep,
         topic_service: topicServiceDep,
         process: AddTopicByOffer,
-        user = Depends(role_validate(UserRoleEnum.MODERATOR, ))
+        user: User = Depends(role_validate(UserRoleEnum.MODERATOR))
 ):
     return await topic_service.create_topic_from_offer(
         process=process, topic=topic_offer, process_user=user

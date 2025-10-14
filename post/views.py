@@ -12,8 +12,8 @@ from post.schemas import (FullPostShow, PostCreate, PostShow, PostUpdate,
                           TopPostShow)
 from post.utils import PostSearchParams
 from reaction.deps import reactionServiceDep
-from reaction.schemas import ReactionShow
-from reaction.types import PostReactionsGetParams, PostReactionsSetParams
+from reaction.schemas import PostReactionShow
+from reaction.types import ReactionsGetParams, ReactionsSetParams
 from user.deps import anonDep
 
 post_router = APIRouter(prefix="/posts", tags=["📝 Посты"])
@@ -143,12 +143,12 @@ async def get_post_comments(
 @post_router.post(
     "/{slug}/reactions",
     summary="Оставить реакцию под постом",
-    response_model=ReactionShow,
+    response_model=PostReactionShow,
     status_code=status.HTTP_201_CREATED
 )
 async def add_post_reaction(
         post: postDep,
-        reaction: PostReactionsSetParams,
+        reaction: ReactionsSetParams,
         user: currentUserDep,
         like_service: reactionServiceDep,
 ):
@@ -160,11 +160,11 @@ async def add_post_reaction(
 @post_router.get(
     "/{slug}/reactions",
     summary="Получить реакци поста",
-    response_model=list[ReactionShow],
+    response_model=list[PostReactionShow],
 )
 async def get_post_reactions(
         post: postDep,
-        type: PostReactionsGetParams,
+        type: ReactionsGetParams,
         like_service: reactionServiceDep,
         pagination: Pagination = Depends()
 ):

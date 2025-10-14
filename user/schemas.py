@@ -1,8 +1,8 @@
-from typing import Optional
-
 from pydantic import EmailStr, Field, field_serializer, field_validator
 
 from core.schemas import BaseSchema, IdMixinSchema, TimeMixinSchema
+
+from user.model import UserRoleEnum
 
 
 class UserUsername(BaseSchema):
@@ -14,10 +14,10 @@ class UserCreate(BaseSchema):
     password: str = Field(min_length=5)
     email: EmailStr | None = None
 
-
     @field_validator("username")
     def normalize_name(cls, username: str):
         return username.strip().lower()
+
 
 class UserProfile(BaseSchema):
     bio: str | None = None
@@ -32,20 +32,11 @@ class UserUpdate(BaseSchema):
     profile: UserProfile | None = None
 
 
-
-class PostUserShow(BaseSchema):
-    username: str
-
-
 class UserShow(BaseSchema, IdMixinSchema, TimeMixinSchema):
     username: str
     email: EmailStr | None
     profile: UserProfile
     is_active: bool
-
-
-
-from user.model import UserRoleEnum
 
 
 class UserShowMe(UserShow):
@@ -60,9 +51,6 @@ class UserShowMe(UserShow):
 
 
 
-
-
-
 class PasswordChange(BaseSchema):
 
     old_password: str = Field(min_length=5)
@@ -71,8 +59,6 @@ class PasswordChange(BaseSchema):
 
 class PasswordCreate(BaseSchema):
     password: str = Field(min_length=5)
-
-
 
 
 class UserSettings(BaseSchema):

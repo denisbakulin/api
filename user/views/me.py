@@ -5,7 +5,7 @@ from comment.deps import commentServiceDep
 from comment.schemas import CommentShow
 from helpers.search import Pagination
 from reaction.deps import reactionServiceDep
-from reaction.schemas import ReactionShow
+
 from reaction.types import UserReactions
 from user.deps import userServiceDep
 from user.schemas import (PasswordChange, PasswordCreate, UserSettings,
@@ -105,11 +105,11 @@ async def get_my_comments(
 ):
     return await comment_service.get_user_comments(user=user, pagination=pagination)
 
-
+from reaction.schemas import PostReactionShow, TopicReactionShow
 @me_router.get(
     "/reactions",
     summary="Получить реакции пользователя",
-    response_model=list[ReactionShow],
+    response_model=list[PostReactionShow | TopicReactionShow],
 
 )
 async def get_my_reactions(

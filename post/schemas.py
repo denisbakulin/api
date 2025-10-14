@@ -1,8 +1,8 @@
 from pydantic import BaseModel, Field
 
 from core.schemas import BaseSchema, IdMixinSchema, TimeMixinSchema
-from user.schemas import PostUserShow
-
+from topic.schemas import TopicSlug
+from reaction.schemas import ReactionsCount
 
 class PostAllows(BaseSchema):
     allow_comments: bool = Field(default=True)
@@ -20,6 +20,8 @@ from user.schemas import UserUsername
 class PostShow(PostBase, IdMixinSchema, TimeMixinSchema):
     author: UserUsername
     slug: str
+    topic: TopicSlug | None
+
 
 class PostSlug(BaseSchema):
     slug: str
@@ -28,15 +30,10 @@ class TopPostShow(BaseSchema):
     post: PostShow
     count: int
 
-class PostReactions(BaseModel):
-    like: int = 0
-    love: int = 0
-    dislike: int = 0
-
 
 class FullPostShow(BaseSchema):
     post: PostShow
-    reactions: PostReactions
+    reactions: ReactionsCount
 
 
 

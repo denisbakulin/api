@@ -15,25 +15,6 @@ class PostRepository(BaseRepository[Post]):
         super().__init__(Post, session)
         self.subs_repository = SubscribeRepository(session)
 
-    async def get_posts(
-            self,
-            offset: Optional[int],
-            limit: Optional[int],
-            **filters,
-    ) -> list[Post] | None:
-
-        return await self.get_any_by(offset=offset, limit=limit, **filters)
-
-    async def search_posts(
-            self,
-            offset: int,
-            limit: int,
-            field: str,
-            query: Any,
-    ) -> list[Post]:
-        return await self.search(field, query, offset=offset, limit=limit)
-
-
     async def get_posts_by_user_subscribes(
             self,
             user_id: int,

@@ -18,7 +18,7 @@ from user.utils import (UserSearchParams, generate_hashed_password,
 class UserService(BaseService[User, UserRepository]):
     def __init__(self, session: AsyncSession):
         super().__init__(User, session, UserRepository)
-        self.direct_chat_service = DirectChatService(session)
+        self.direct_service = DirectChatService(session)
         self.profile_service = BaseService(Profile, session)
 
 
@@ -30,17 +30,17 @@ class UserService(BaseService[User, UserRepository]):
 
         user_create.password = hashed_password
 
-        user = self.repository.create_user(
+        user = self.repository.create(
             **user_create.model_dump(),
         )
 
-        await self.direct_chat_service.create_favorites_chat(user)
+        await self.direct_service.create_favorites_chat(user)
 
         return user
 
 
     async def login_user_via_telegram(self, tg_user: TelegramUser) -> User:
-        user = await self.repository.get_user(tg_id=tg_user.id)
+        user = await self.repository.get_one_by(tg_id=tg_user.id)
 
         if user is not None:
             return user

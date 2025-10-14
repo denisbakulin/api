@@ -7,7 +7,7 @@ from post.repository import PostRepository
 from post.schemas import PostCreate, PostUpdate, TopPostShow
 from post.utils import generate_slug
 from user.model import User
-
+from helpers.search import Pagination
 
 class PostService(BaseService[Post, PostRepository]):
 
@@ -27,7 +27,7 @@ class PostService(BaseService[Post, PostRepository]):
     async def get_top_of_posts(self, q: str):
 
         posts = await self.repository.get_top_of_posts(q)
-        return [TopPostShow(post=p[0], count=p[1]) for p in posts]
+        return [TopPostShow(post=post, count=count) for post, count in posts]
 
 
     async def update_post(self, post: Post, post_update: PostUpdate, user: User) -> Post:
@@ -41,3 +41,11 @@ class PostService(BaseService[Post, PostRepository]):
         await self.update_item(post, **post_update.model_dump())
 
         return post
+
+    async def get_user_posts(self, user: User, pagination: Pagination) -> list[Post]:
+        return await self.get_items_by(
+            user_id=user.id,
+            topic_id=None,
+            **pagination.dict()
+        )
+

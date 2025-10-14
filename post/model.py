@@ -19,7 +19,7 @@ class Post(BaseORM, IdMixin, TimeMixin):
     author_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
 
     author: Mapped["User"] = relationship("User", lazy="selectin")
-    topic: Mapped["User"] = relationship("Topic")
+    topic: Mapped["User"] = relationship("Topic", lazy="selectin" )
 
     @property
     def is_personal(self) -> bool:
