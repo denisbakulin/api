@@ -21,7 +21,7 @@ class BinanceAPI(ExternalAPI):
         async with AsyncClient(base_url=self.path) as client:
 
             response = await client.get(
-                "/api/v3/ticker/price",
+                "/ticker/price",
                 params={"symbol": f"{ticker.upper()}USDT"}
             )
             data = response.json()
@@ -35,9 +35,4 @@ class BinanceAPI(ExternalAPI):
             return data
 
 
-from functools import lru_cache
-
-
-@lru_cache
-def get_binance_client() -> BinanceAPI:
-    return BinanceAPI("https://api.binance.com")
+binance_client = BinanceAPI("https://api.binance.com/api/v3")

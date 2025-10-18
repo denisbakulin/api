@@ -44,14 +44,9 @@ class OpenWeatherAPI(ExternalAPI):
         return res
 
 
-from functools import lru_cache
 
-
-@lru_cache
-def get_openweather_client() -> OpenWeatherAPI:
-    return OpenWeatherAPI(
-            "https://api.openweathermap.org",
-            "565b6c3459edaffcef3b889efa0903c4"
-    )
-
+openweather_client = OpenWeatherAPI(
+    "https://api.openweathermap.org",
+    "565b6c3459edaffcef3b889efa0903c4"
+)
 

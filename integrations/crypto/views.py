@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from fastapi_cache.decorator import cache
 
-from integrations.crypto.external import CryptoResponse, get_binance_client
+from integrations.crypto.external import CryptoResponse, binance_client
 
 crypto_router = APIRouter(prefix="/ext/crypto", tags=["💰 Криптовалюты"])
 
@@ -15,7 +15,7 @@ async def get_crypto(
         ticker: str,
 ) -> CryptoResponse:
 
-    return await get_binance_client().get_crypto_info(ticker)
+    return await binance_client.get_crypto_info(ticker)
 
 
 

@@ -43,6 +43,7 @@ def include_routers(app: FastAPI):
     from direct.ws import ws
     from integrations.crypto.views import crypto_router
     from integrations.weather.views import weather_router
+    from integrations.university.views import university_router
     from post.views import post_router
     from subs.views import subs_router
     from topic.views import topic_router
@@ -53,7 +54,7 @@ def include_routers(app: FastAPI):
         auth_router, user_router,
         me_router, topic_router,
         post_router, comm_router,
-        crypto_router, weather_router,
+        crypto_router, weather_router, university_router,
         direct_router, ws, subs_router,
         admin_router
     ]

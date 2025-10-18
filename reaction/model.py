@@ -16,8 +16,8 @@ class Reaction(BaseORM, TimeMixin, IdMixin):
     )
 
     post: Mapped["Post"] = relationship("Post", lazy="selectin")
-    topic: Mapped["Post"] = relationship("Topic", lazy="selectin")
-    user: Mapped["Post"] = relationship("User", lazy="selectin")
+    topic: Mapped["Topic"] = relationship("Topic", lazy="selectin")
+    user: Mapped["User"] = relationship("User", lazy="selectin")
 
 
 

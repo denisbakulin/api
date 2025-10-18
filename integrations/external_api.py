@@ -33,18 +33,8 @@ def safe_request(func):
     return wrapper
 
 async def main() -> None:
+    ...
 
-    from integrations.crypto.external import get_binance_client
-    from integrations.weather.external import get_openweather_client
-
-    crypto = get_binance_client()
-    temp = get_openweather_client()
-
-    res1 = await crypto.get_crypto_info()
-    res2 = await temp.get_city_weather("zelenogorsk")
-
-    print(res1)
-    print(res2)
 
 if __name__ == "__main__":
     asyncio.run(main())

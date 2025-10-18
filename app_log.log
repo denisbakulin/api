@@ -24819,3 +24819,119 @@
 2025-10-14T00:44:38.930515+0000 INFO Response: GET http://localhost:8002/docs Status: 200 Time: 0.0000s
 2025-10-14T00:44:39.192197+0000 INFO Request: GET http://localhost:8002/openapi.json from 127.0.0.1
 2025-10-14T00:44:39.290450+0000 INFO Response: GET http://localhost:8002/openapi.json Status: 200 Time: 0.0940s
+2025-10-16T02:41:12.192310+0000 INFO Request: GET http://127.0.0.1:8000/docs from 127.0.0.1
+2025-10-16T02:41:12.194313+0000 INFO Response: GET http://127.0.0.1:8000/docs Status: 200 Time: 0.0000s
+2025-10-16T02:41:14.973566+0000 INFO Request: GET http://127.0.0.1:8000/openapi.json from 127.0.0.1
+2025-10-16T02:41:15.133185+0000 INFO Response: GET http://127.0.0.1:8000/openapi.json Status: 200 Time: 0.1570s
+2025-10-16T02:41:36.878272+0000 INFO Request: GET http://127.0.0.1:8000/ext/timetable/БКБ25-02 from 127.0.0.1
+2025-10-16T02:41:37.956703+0000 INFO Response: GET http://127.0.0.1:8000/ext/timetable/БКБ25-02 Status: 200 Time: 1.0780s
+2025-10-16T02:41:51.532203+0000 INFO Request: GET http://127.0.0.1:8000/ext/timetable/БПИ25-02 from 127.0.0.1
+2025-10-16T02:41:52.280907+0000 INFO Response: GET http://127.0.0.1:8000/ext/timetable/БПИ25-02 Status: 200 Time: 0.7500s
+2025-10-16T02:42:40.680321+0000 INFO Request: GET http://127.0.0.1:8000/ext/timetable/БПИ25-02 from 127.0.0.1
+2025-10-16T02:42:41.469039+0000 INFO Response: GET http://127.0.0.1:8000/ext/timetable/БПИ25-02 Status: 200 Time: 0.7970s
+2025-10-16T02:43:30.973560+0000 INFO Request: GET http://127.0.0.1:8000/ext/timetable/БПИ25-02 from 127.0.0.1
+2025-10-16T02:43:31.754174+0000 INFO Response: GET http://127.0.0.1:8000/ext/timetable/БПИ25-02 Status: 200 Time: 0.7820s
+2025-10-16T02:44:57.829496+0000 INFO Request: GET http://127.0.0.1:8000/ext/timetable/БПИ25-02 from 127.0.0.1
+2025-10-16T02:44:58.649124+0000 INFO Response: GET http://127.0.0.1:8000/ext/timetable/БПИ25-02 Status: 200 Time: 0.8120s
+2025-10-16T02:45:30.967796+0000 INFO Request: GET http://127.0.0.1:8000/ext/timetable/БПИ25-02 from 127.0.0.1
+2025-10-16T02:45:31.713791+0000 ERROR Response: GET http://127.0.0.1:8000/ext/timetable/БПИ25-02 Status: 500 Time: 0.7350s
+2025-10-16T02:46:14.127091+0000 INFO Request: GET http://127.0.0.1:8000/ext/timetable/БПИ25-02 from 127.0.0.1
+2025-10-16T02:46:14.912732+0000 INFO Response: GET http://127.0.0.1:8000/ext/timetable/БПИ25-02 Status: 200 Time: 0.7810s
+2025-10-16T02:46:18.260079+0000 INFO Request: GET http://127.0.0.1:8000/ext/timetable/БПИ25-02 from 127.0.0.1
+2025-10-16T02:46:19.095771+0000 INFO Response: GET http://127.0.0.1:8000/ext/timetable/БПИ25-02 Status: 200 Time: 0.8430s
+2025-10-16T02:48:59.321296+0000 INFO Request: GET http://127.0.0.1:8000/ext/timetable/БПИ25-02 from 127.0.0.1
+2025-10-16T02:49:00.202799+0000 INFO Response: GET http://127.0.0.1:8000/ext/timetable/БПИ25-02 Status: 200 Time: 0.8910s
+2025-10-16T02:52:48.628724+0000 INFO Request: GET http://127.0.0.1:8000/ext/timetable/БПИ25-02 from 127.0.0.1
+2025-10-16T02:52:49.608225+0000 INFO Response: GET http://127.0.0.1:8000/ext/timetable/БПИ25-02 Status: 200 Time: 0.9840s
+2025-10-16T02:53:19.346089+0000 INFO Request: GET http://127.0.0.1:8000/ext/timetable/БПИ25-02 from 127.0.0.1
+2025-10-16T02:56:41.678495+0000 INFO Request: GET http://127.0.0.1:8001/docs from 127.0.0.1
+2025-10-16T02:56:41.680495+0000 INFO Response: GET http://127.0.0.1:8001/docs Status: 200 Time: 0.0000s
+2025-10-16T02:56:42.185822+0000 INFO Request: GET http://127.0.0.1:8001/openapi.json from 127.0.0.1
+2025-10-16T02:56:42.310817+0000 INFO Response: GET http://127.0.0.1:8001/openapi.json Status: 200 Time: 0.1250s
+2025-10-16T02:56:58.672920+0000 INFO Request: GET http://127.0.0.1:8001/ext/timetable/БКБ25-01 from 127.0.0.1
+2025-10-16T02:57:50.986531+0000 INFO Request: GET http://127.0.0.1:8001/ext/timetable/БКБ25-01 from 127.0.0.1
+2025-10-16T02:57:51.827250+0000 INFO Response: GET http://127.0.0.1:8001/ext/timetable/БКБ25-01 Status: 200 Time: 0.8440s
+2025-10-16T02:58:40.548691+0000 INFO Request: GET http://127.0.0.1:8001/ext/timetable/БПИ25-02 from 127.0.0.1
+2025-10-16T02:58:41.346233+0000 INFO Response: GET http://127.0.0.1:8001/ext/timetable/БПИ25-02 Status: 200 Time: 0.7970s
+2025-10-16T03:04:30.253676+0000 INFO Request: GET http://127.0.0.1:8001/ext/timetable/БПИ25-02 from 127.0.0.1
+2025-10-16T03:04:31.219303+0000 INFO Response: GET http://127.0.0.1:8001/ext/timetable/БПИ25-02 Status: 200 Time: 0.9680s
+2025-10-16T03:04:31.228309+0000 INFO Request: GET http://127.0.0.1:8001/ext/timetable/БПИ25-02 from 127.0.0.1
+2025-10-16T03:04:31.968967+0000 INFO Response: GET http://127.0.0.1:8001/ext/timetable/БПИ25-02 Status: 200 Time: 0.7500s
+2025-10-16T03:05:09.560412+0000 INFO Request: GET http://127.0.0.1:8001/ext/timetable/БПИ25-02 from 127.0.0.1
+2025-10-16T03:05:10.355455+0000 INFO Response: GET http://127.0.0.1:8001/ext/timetable/БПИ25-02 Status: 200 Time: 0.7810s
+2025-10-16T03:06:09.713521+0000 INFO Request: GET http://127.0.0.1:8002/docs from 127.0.0.1
+2025-10-16T03:06:09.715521+0000 INFO Response: GET http://127.0.0.1:8002/docs Status: 200 Time: 0.0000s
+2025-10-16T03:06:09.952529+0000 INFO Request: GET http://127.0.0.1:8002/openapi.json from 127.0.0.1
+2025-10-16T03:06:10.051525+0000 INFO Response: GET http://127.0.0.1:8002/openapi.json Status: 200 Time: 0.0930s
+2025-10-16T03:06:27.635499+0000 INFO Request: GET http://127.0.0.1:8002/ext/timetable/БИС24-01 from 127.0.0.1
+2025-10-16T03:06:28.384187+0000 INFO Response: GET http://127.0.0.1:8002/ext/timetable/БИС24-01 Status: 200 Time: 0.7500s
+2025-10-16T03:11:27.067385+0000 INFO Request: GET http://127.0.0.1:8002/ext/timetable/БИС24-01 from 127.0.0.1
+2025-10-16T03:11:27.831384+0000 INFO Response: GET http://127.0.0.1:8002/ext/timetable/БИС24-01 Status: 200 Time: 0.7660s
+2025-10-16T03:14:17.357902+0000 INFO Request: GET http://127.0.0.1:8003/docs from 127.0.0.1
+2025-10-16T03:14:17.357902+0000 INFO Response: GET http://127.0.0.1:8003/docs Status: 200 Time: 0.0000s
+2025-10-16T03:14:17.560457+0000 INFO Request: GET http://127.0.0.1:8003/openapi.json from 127.0.0.1
+2025-10-16T03:14:17.656042+0000 INFO Response: GET http://127.0.0.1:8003/openapi.json Status: 200 Time: 0.0940s
+2025-10-16T03:14:33.866692+0000 INFO Request: GET http://127.0.0.1:8003/ext/timetable/БИС25-01 from 127.0.0.1
+2025-10-16T03:14:34.772188+0000 INFO Response: GET http://127.0.0.1:8003/ext/timetable/БИС25-01 Status: 200 Time: 0.9060s
+2025-10-16T03:15:47.541394+0000 INFO Request: GET http://127.0.0.1:8003/ext/timetable/БИС25-01 from 127.0.0.1
+2025-10-16T03:15:48.255043+0000 INFO Response: GET http://127.0.0.1:8003/ext/timetable/БИС25-01 Status: 200 Time: 0.7190s
+2025-10-16T03:16:36.081236+0000 INFO Request: GET http://127.0.0.1:8003/ext/timetable/БИС25-01 from 127.0.0.1
+2025-10-16T03:16:36.445559+0000 INFO Response: GET http://127.0.0.1:8003/ext/timetable/БИС25-01 Status: 200 Time: 0.3590s
+2025-10-16T03:19:21.976423+0000 INFO Request: GET http://127.0.0.1:8003/ext/timetable/Х25-01 from 127.0.0.1
+2025-10-16T03:19:22.670682+0000 INFO Response: GET http://127.0.0.1:8003/ext/timetable/Х25-01 Status: 200 Time: 0.7030s
+2025-10-16T03:19:44.044336+0000 INFO Request: GET http://127.0.0.1:8003/ext/timetable/БИС25-01 from 127.0.0.1
+2025-10-16T03:19:44.760894+0000 INFO Response: GET http://127.0.0.1:8003/ext/timetable/БИС25-01 Status: 200 Time: 0.7040s
+2025-10-16T03:20:52.635954+0000 INFO Request: GET http://127.0.0.1:8003/ext/timetable/БИС25-01 from 127.0.0.1
+2025-10-16T03:20:53.378501+0000 INFO Response: GET http://127.0.0.1:8003/ext/timetable/БИС25-01 Status: 200 Time: 0.7500s
+2025-10-16T03:21:10.449629+0000 INFO Request: GET http://127.0.0.1:8003/ext/timetable/БИС25-01 from 127.0.0.1
+2025-10-16T03:21:11.106299+0000 INFO Response: GET http://127.0.0.1:8003/ext/timetable/БИС25-01 Status: 200 Time: 0.6560s
+2025-10-16T03:21:26.986723+0000 INFO Request: GET http://127.0.0.1:8003/ext/timetable/БИС25-01 from 127.0.0.1
+2025-10-16T03:21:27.402513+0000 INFO Response: GET http://127.0.0.1:8003/ext/timetable/БИС25-01 Status: 200 Time: 0.4060s
+2025-10-16T03:21:34.475187+0000 INFO Request: GET http://127.0.0.1:8003/ext/timetable/БИС25-01 from 127.0.0.1
+2025-10-16T03:21:34.828426+0000 INFO Response: GET http://127.0.0.1:8003/ext/timetable/БИС25-01 Status: 200 Time: 0.3600s
+2025-10-16T03:23:11.646352+0000 INFO Request: GET http://127.0.0.1:8003/ext/timetable/БИС25-01 from 127.0.0.1
+2025-10-16T03:23:12.344160+0000 INFO Response: GET http://127.0.0.1:8003/ext/timetable/БИС25-01 Status: 200 Time: 0.7030s
+2025-10-16T03:23:24.532844+0000 INFO Request: GET http://127.0.0.1:8003/ext/timetable/БИС25-01 from 127.0.0.1
+2025-10-16T03:23:25.283045+0000 INFO Response: GET http://127.0.0.1:8003/ext/timetable/БИС25-01 Status: 200 Time: 0.7500s
+2025-10-16T04:33:12.069755+0000 INFO Request: GET http://127.0.0.1:8003/ext/timetable/БИС25-01 from 127.0.0.1
+2025-10-16T04:33:12.951534+0000 INFO Response: GET http://127.0.0.1:8003/ext/timetable/БИС25-01 Status: 200 Time: 0.8910s
+2025-10-16T04:57:46.463224+0000 INFO Request: GET http://127.0.0.1:8003/docs from 127.0.0.1
+2025-10-16T04:57:46.465222+0000 INFO Response: GET http://127.0.0.1:8003/docs Status: 200 Time: 0.0000s
+2025-10-16T04:57:46.707360+0000 INFO Request: GET http://127.0.0.1:8003/openapi.json from 127.0.0.1
+2025-10-16T04:57:46.971359+0000 INFO Response: GET http://127.0.0.1:8003/openapi.json Status: 200 Time: 0.2650s
+2025-10-16T04:58:03.399605+0000 INFO Request: GET http://127.0.0.1:8003/docs from 127.0.0.1
+2025-10-16T04:58:03.401654+0000 INFO Response: GET http://127.0.0.1:8003/docs Status: 200 Time: 0.0000s
+2025-10-16T04:58:03.548363+0000 INFO Request: GET http://127.0.0.1:8003/openapi.json from 127.0.0.1
+2025-10-16T04:58:03.553362+0000 INFO Response: GET http://127.0.0.1:8003/openapi.json Status: 200 Time: 0.0000s
+2025-10-16T04:58:44.500617+0000 INFO Request: GET http://127.0.0.1:8004/docs from 127.0.0.1
+2025-10-16T04:58:44.501661+0000 INFO Response: GET http://127.0.0.1:8004/docs Status: 200 Time: 0.0000s
+2025-10-16T04:58:44.664314+0000 INFO Request: GET http://127.0.0.1:8004/openapi.json from 127.0.0.1
+2025-10-16T04:58:44.766309+0000 INFO Response: GET http://127.0.0.1:8004/openapi.json Status: 200 Time: 0.1090s
+2025-10-16T04:58:58.193615+0000 INFO Request: GET http://127.0.0.1:8004/ext/timetable/groups/?count=10 from 127.0.0.1
+2025-10-16T04:58:59.043579+0000 ERROR Response: GET http://127.0.0.1:8004/ext/timetable/groups/?count=10 Status: 500 Time: 0.8440s
+2025-10-16T05:00:38.424047+0000 INFO Request: GET http://127.0.0.1:8004/ext/timetable/groups/?count=10 from 127.0.0.1
+2025-10-16T05:00:39.048096+0000 ERROR Response: GET http://127.0.0.1:8004/ext/timetable/groups/?count=10 Status: 500 Time: 0.6250s
+2025-10-16T05:01:05.064519+0000 INFO Request: GET http://127.0.0.1:8004/ext/timetable/groups/?count=10 from 127.0.0.1
+2025-10-16T05:01:05.754404+0000 ERROR Response: GET http://127.0.0.1:8004/ext/timetable/groups/?count=10 Status: 500 Time: 0.6880s
+2025-10-16T05:02:10.883705+0000 INFO Request: GET http://127.0.0.1:8004/ext/timetable/groups/?count=10 from 127.0.0.1
+2025-10-16T05:02:11.608708+0000 ERROR Response: GET http://127.0.0.1:8004/ext/timetable/groups/?count=10 Status: 500 Time: 0.7340s
+2025-10-16T05:03:06.962654+0000 INFO Request: GET http://127.0.0.1:8004/ext/timetable/groups/?count=10 from 127.0.0.1
+2025-10-16T05:03:06.975655+0000 INFO Response: GET http://127.0.0.1:8004/ext/timetable/groups/?count=10 Status: 307 Time: 0.0150s
+2025-10-16T05:03:06.984787+0000 INFO Request: GET http://127.0.0.1:8004/ext/timetable/groups?count=10 from 127.0.0.1
+2025-10-16T05:03:07.671267+0000 INFO Response: GET http://127.0.0.1:8004/ext/timetable/groups?count=10 Status: 200 Time: 0.6870s
+2025-10-16T05:03:17.007713+0000 INFO Request: GET http://127.0.0.1:8004/docs from 127.0.0.1
+2025-10-16T05:03:17.009715+0000 INFO Response: GET http://127.0.0.1:8004/docs Status: 200 Time: 0.0000s
+2025-10-16T05:03:17.184399+0000 INFO Request: GET http://127.0.0.1:8004/openapi.json from 127.0.0.1
+2025-10-16T05:03:17.302430+0000 INFO Response: GET http://127.0.0.1:8004/openapi.json Status: 200 Time: 0.1250s
+2025-10-16T05:04:08.529584+0000 INFO Request: GET http://127.0.0.1:8004/docs from 127.0.0.1
+2025-10-16T05:04:08.530551+0000 INFO Response: GET http://127.0.0.1:8004/docs Status: 200 Time: 0.0000s
+2025-10-16T05:04:08.640258+0000 INFO Request: GET http://127.0.0.1:8004/openapi.json from 127.0.0.1
+2025-10-16T05:04:08.739251+0000 INFO Response: GET http://127.0.0.1:8004/openapi.json Status: 200 Time: 0.0940s
+2025-10-16T05:04:22.963065+0000 INFO Request: GET http://127.0.0.1:8004/ext/university/groups?count=100 from 127.0.0.1
+2025-10-16T05:04:23.945145+0000 ERROR Response: GET http://127.0.0.1:8004/ext/university/groups?count=100 Status: 500 Time: 0.9840s
+2025-10-16T05:05:03.935084+0000 INFO Request: GET http://127.0.0.1:8004/ext/university/groups?count=100 from 127.0.0.1
+2025-10-16T05:05:04.637858+0000 ERROR Response: GET http://127.0.0.1:8004/ext/university/groups?count=100 Status: 500 Time: 0.6880s
+2025-10-16T05:05:27.241418+0000 INFO Request: GET http://127.0.0.1:8004/ext/university/groups?count=100 from 127.0.0.1
+2025-10-16T05:05:27.970418+0000 ERROR Response: GET http://127.0.0.1:8004/ext/university/groups?count=100 Status: 500 Time: 0.7340s
+2025-10-16T05:06:34.222730+0000 INFO Request: GET http://127.0.0.1:8004/ext/university/groups?count=100 from 127.0.0.1
+2025-10-16T05:06:34.681791+0000 INFO Response: GET http://127.0.0.1:8004/ext/university/groups?count=100 Status: 200 Time: 0.4530s
