@@ -1,15 +1,7 @@
 from enum import IntEnum
-
-from sqlalchemy import ForeignKey, Index
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from core.model import BaseORM, IdMixin, TimeMixin
-
-
-class UserRoleEnum(IntEnum):
-    ADMIN = 2
-    USER = 1
-
 
 class User(BaseORM, IdMixin, TimeMixin):
     __tablename__ = "users"

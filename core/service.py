@@ -5,7 +5,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from core.exceptions import EntityAlreadyExists, EntityNotFoundError
 from core.model import BaseORM
 from core.repository import BaseRepository
-from helpers.search import Pagination
 
 T = TypeVar("T", bound=BaseORM)
 R = TypeVar("R", bound=BaseRepository)
@@ -67,10 +66,9 @@ class BaseService[T, R]:
 
     async def get_items_by(
             self,
-            pagination: Pagination,
             **params
     ) -> list[T]:
-        return await self.repository.get_any_by(**params, **pagination.dict())
+        return await self.repository.get_any_by(**params)
 
 
 
@@ -91,17 +89,6 @@ class BaseService[T, R]:
             )
 
 
-
-    async def delete_item_by_id(self, item_id):
-        """Удаляет запись по переданному id"""
-
-        await self.repository.delete_by_id(item_id)
-
-
-    async def delete_item(self, item: T):
-        await self.repository.delete(item)
-
-
     async def update_item(self, item: T, **updates) -> T:
         await self.repository.update(item, **updates)
         await self.session.commit()
@@ -112,7 +99,6 @@ class BaseService[T, R]:
     async def search_items(
             self,
             search,
-            pagination: Pagination,
             inner_props: dict[str, Any] | None = None,
             **filters,
     ) -> list[T]:
@@ -120,7 +106,6 @@ class BaseService[T, R]:
         if search.strict:
             return await self.repository.get_any_by(
                 **{search.field: search.q},
-                **pagination.dict(),
                 **filters,
                 inner_props=inner_props,
 
@@ -128,7 +113,6 @@ class BaseService[T, R]:
         return await self.repository.search(
             field=search.field,
             query=search.q,
-            **pagination.dict(),
             **filters,
             inner_props=inner_props,
         )

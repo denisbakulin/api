@@ -2,7 +2,7 @@ from fastapi import APIRouter, Cookie, Depends, HTTPException, Response
 
 from auth.deps import get_auth_service
 from auth.exceptions import InvalidTokenError
-from auth.schemas import AccessTokenResponse, AuthCreds, TelegramAuth
+from auth.schemas import AccessTokenResponse, AuthCreds
 from auth.service import AuthService
 from auth.utils import (TokenCreator, TokenTypes, decode_token,
                         set_refresh_token_cookie)
@@ -20,22 +20,7 @@ async def login_password_user(
         auth_service: AuthService = Depends(get_auth_service)
 ):
 
-    tokens = await auth_service.login_via_password(creds)
-    set_refresh_token_cookie(response, tokens.refresh_token)
-    return AccessTokenResponse(access_token=tokens.access_token)
-
-
-@auth_router.post(
-    "/telegram/login",
-    summary="Войти в аккаунт через telegram",
-    response_model=AccessTokenResponse,
-)
-async def login_telegram_user(
-        response: Response,
-        body: TelegramAuth,
-        auth_service: AuthService = Depends(get_auth_service)
-):
-    tokens = await auth_service.login_via_telegram(body.initData)
+    tokens = await auth_service.login(creds)
     set_refresh_token_cookie(response, tokens.refresh_token)
     return AccessTokenResponse(access_token=tokens.access_token)
 

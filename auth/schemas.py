@@ -21,17 +21,3 @@ class AuthCreds(BaseModel):
     username: str = "admin"
     password: str = "admin"
 
-
-class TelegramUser(BaseModel):
-    id: int
-    is_bot: Optional[bool] = False
-    first_name: Optional[str] = None
-    last_name: Optional[str] = None
-    username: Optional[str] = None
-    language_code: Optional[str] = None
-    allows_write_to_pm: Optional[bool] = None
-
-
-class TelegramAuth(BaseModel):
-    initData: str
-

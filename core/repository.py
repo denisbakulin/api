@@ -25,8 +25,6 @@ class BaseRepository[T]:
 
     async def get_any_by(
             self,
-            offset: int | None = None,
-            limit: int | None = None,
             lines: list | None = None,
             order_by: str = "id",
             _desc: bool = True,
@@ -53,11 +51,6 @@ class BaseRepository[T]:
         if order_func is not None:
             stmt = stmt.order_by(desc(order_func) if _desc else order_func)
 
-        if offset:
-            stmt = stmt.offset(offset)
-
-        if limit:
-            stmt = stmt.limit(limit)
 
         result = await self.session.execute(stmt)
 
@@ -145,15 +138,11 @@ class BaseRepository[T]:
         self,
         field: str,
         query: Any,
-        offset: int,
-        limit: int,
         inner_props: dict[str, Any] | None = None,
     ) -> list[T]:
         stmt = select(self.model).where(getattr(self.model, field).ilike(f"%{query}%"))
 
         stmt = self._process_stmt_with_inner_fields(inner_props, stmt)
-
-        stmt = stmt.offset(offset).limit(limit)
 
         result = await self.session.execute(stmt)
 

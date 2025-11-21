@@ -14,7 +14,6 @@ class ErrorResponse(JSONResponse):
     def __init__(self, status_code: status, exc: Exception):
         super().__init__(status_code=status_code, content={"detail": str(exc)})
 
-
 class AppExceptionMiddleware(BaseHTTPMiddleware):
 
     async def dispatch(self, request: Request, call_next):

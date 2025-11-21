@@ -1,9 +1,7 @@
 from functools import wraps
-from typing import Callable, Optional, Self
+from typing import Optional
 
 from fastapi import WebSocket
-
-from direct.schemas import ClientDirectEvent
 
 
 class WebSocketManager:
@@ -61,56 +59,6 @@ class WebSocketManager:
             }
         })
 
-    @recipient_connected
-    async def reaction_notify(self, connection: WebSocket, *, username: str, reaction: str, post_id: int):
-        await connection.send_json({
-            "action": "reaction",
-            "data": {
-                "username": username,
-                "reaction": reaction,
-                "post_id": post_id
-            }
-        })
-
-    @recipient_connected
-    async def comment_notify(self, connection: WebSocket, *, username: str, comment: str, comment_id: int):
-        await connection.send_json({
-            "action": "reaction",
-            "data": {
-                "username": username,
-                "comment": comment
-            }
-        })
-
-    @recipient_connected
-    async def edit_message(self, connection: WebSocket, *, username: str, message_id: int, content: str):
-        await connection.send_json({
-            "action": "edit_message",
-            "data": {
-                "username": username,
-                "message_id": message_id,
-                "content": content
-            }
-        })
-
-    @recipient_connected
-    async def user_typing(self, connection: WebSocket, *, initiator_id: int):
-        await connection.send_json({
-            "action": "typing",
-            "data": {
-                "initiator_id": initiator_id
-            }
-        })
-
-    async def process(self, event: ClientDirectEvent):
-        action_relationship: dict[str, Callable] = {
-            "typing": self.user_typing,
-        }
-
-        action = action_relationship.get(event.type)
-
-        if action:
-            action(**event.data)
 
 
 

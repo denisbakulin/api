@@ -5,16 +5,10 @@ from jose import JWTError, jwt
 
 from auth.exceptions import InvalidTokenError
 from auth.schemas import TokenInfo
-from core.settings import jwt_auth_settings, tg_auth_settings
+from core.settings import jwt_auth_settings
 
 from datetime import datetime, timedelta
 
-import hashlib
-import hmac
-from urllib.parse import parse_qsl
-
-from auth.exceptions import TelegramAuthError
-from auth.schemas import TelegramUser
 
 class TokenTypes(StrEnum):
     access = "access"
@@ -76,18 +70,5 @@ def set_refresh_token_cookie(response: Response, token):
         max_age=60 * 60 * 24 * 7,
         path="/"
     )
-
-def check_telegram_auth(data: str) -> TelegramUser:
-    parsed = dict(parse_qsl(data))
-    hash_ = parsed.pop("hash", None)
-
-    data_check_string = "\n".join(f"{k}={v}" for k, v in sorted(parsed.items()))
-    secret_key = hashlib.sha256(tg_auth_settings.token.encode()).digest()
-    calc_hash = hmac.new(secret_key, data_check_string.encode(), hashlib.sha256).hexdigest()
-
-    if calc_hash != hash_:
-        raise TelegramAuthError("Некорректный токен авторизации initData")
-
-    return TelegramUser.model_validate(parsed.get("user"))
 
 

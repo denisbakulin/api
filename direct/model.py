@@ -44,9 +44,7 @@ class DirectUserSettings(BaseORM):
     chat_id: Mapped[int] = mapped_column(ForeignKey("direct_chats.id"), primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), primary_key=True)
 
-    enable_notifications: Mapped[bool] = mapped_column(default=True)
     chat_name: Mapped[str | None] = mapped_column(nullable=True)
-    banned: Mapped[bool] = mapped_column(default=False)
 
 
 

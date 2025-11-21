@@ -2,7 +2,6 @@ from typing import Optional
 
 from sqlalchemy import and_, case, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import aliased
 
 from core.repository import BaseRepository
 from direct.model import DirectChat, DirectUserSettings
@@ -31,7 +30,7 @@ class DirectChatRepository(BaseRepository):
 
         return result.scalar_one_or_none()
 
-    async def get_user_chats(self, user_id: int, offset: int, limit: int) -> list[tuple[DirectUserSettings, User]]:
+    async def get_user_chats(self, user_id: int) -> list[tuple[DirectUserSettings, User]]:
         """Возвращает чаты пользователя в виде
         [("название чата", User - собеседник)]"""
 
@@ -60,9 +59,6 @@ class DirectChatRepository(BaseRepository):
                 User,
                 User.id == companion_id_case,
             )
-
-            .offset(offset)
-            .limit(limit)
         )
 
         result = await self.session.execute(stmt)

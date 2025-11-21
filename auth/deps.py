@@ -15,7 +15,7 @@ from user.model import User
 from user.service import UserService
 from user.model import UserRoleEnum
 from typing import Callable
-from operator import ge
+from operator import le
 
 Operator = Callable[[UserRoleEnum, UserRoleEnum], bool]
 security = HTTPBearer()
@@ -47,14 +47,11 @@ async def get_current_user(
 
 
 
-def role_validate(role: UserRoleEnum, operator: Operator = ge):
+def admin_validate(user: User = Depends(get_current_user)):
     """Проверяет права пользователя"""
-
-    async def wrapper(user: User = Depends(get_current_user)):
-        if operator(user.role, role):
-            return user
+    if user.role != UserRoleEnum.ADMIN:
         raise HTTPException(detail="Недостаточно прав", status_code=403)
-    return wrapper
+    return user
 
 
 async def get_auth_service(
